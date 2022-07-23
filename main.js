@@ -1,6 +1,6 @@
 const saludar = (nombre)=> {
     let pregunta = prompt("Ingrese su nombre");
-    let saludo = `Hola ${pregunta}! Bienvenido a Lemonies!`;
+    let saludo = `Hola ${pregunta}! Bienvenido/a a Lemonies!`;
     alert(saludo);
 } 
 
@@ -12,7 +12,7 @@ class Facturas {
 		this.precio = parseFloat(precio);
 	}
 	mostrarFacturas(){
-		alert(this.nombre + " " +this.precio);
+		alert(this.nombre + " $ " +this.precio);
 	}
 }
 
@@ -55,9 +55,13 @@ while(Facturas!="s"){
     Facturas=prompt("Ingresa el producto y cargalo en el carrito (s-para salir) \ncroissant \npan chocolate \nchausson");
 }
 
-alert("Total a pagar $ "+valor);
+/* alert("Total a pagar $ "+valor); */
 
-if (valor > 800){
+if (valor == 0){
+    alert("Gracias por su visita!");
+} else if (valor > 800){
     let descuento = valor * 0.85;
-    console.log("Ud. recibe un descuento del 15%, por lo que abonará $ " + descuento);
+    alert("Ud. recibe un descuento del 15%, por lo que abonará $ " + descuento +"Gracias por su compra!");
+} else {
+   alert("Total a pagar $ "+valor + ". Gracias por su compra!!");
 }
