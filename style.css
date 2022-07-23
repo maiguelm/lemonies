@@ -1,0 +1,109 @@
+html {
+	font-size: 62.5%; }
+  
+* {
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+	color: #fff; }
+  
+body {
+	background: rgb(93, 93, 93); }
+  
+#navPosition{
+	position: sticky;
+    top: 0;
+    height: 150px;
+    width: 100%;
+}
+
+.navbar-center {
+    width: 100%;
+    max-width: 1170px;
+	height: 150px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+}
+.btn__navflex {
+	justify-content: flex-end !important;
+}
+.enlacesBarra {
+	margin-top: 15px;
+	border-radius: 5px; 
+}
+.enlacesBarra ul {
+	list-style: none; 
+}
+.enlacesBarra ul li {
+	padding: 5px; 
+}
+a {
+	color: #d7d7d7;
+	font-family: "Raleway", sans-serif;
+	font-size: 2rem; 
+}
+
+
+
+.nav-icon {
+    font-size: 1.5rem;
+}
+
+.cart-btn {
+    position: relative;
+    cursor: pointer;
+}
+
+.cart-items {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: var(--primaryColor);
+    padding: 0 5px;
+    border-radius: 30%;
+    color: var(--mainWhite);
+}
+
+.fotoFondo {
+    min-height: 100vh;
+    background: url("./images/wallpaper.jpg");
+	background-repeat: no-repeat;
+	background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.banner {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.5);
+    display: inline-block;
+    padding: 2rem;
+}
+
+.banner-title {
+    font-size: 3.4rem;
+    text-transform: uppercase;
+    letter-spacing: var(--mainSpacing);
+    margin-bottom: 3rem;
+}
+
+.banner-btn {
+    padding: 1rem 2rem;
+    text-transform: uppercase;
+    letter-spacing: var(--mainSpacing);
+    font-size: 1rem;
+    background: var(--primaryColor);
+    color: var(--mainWhite);
+    border: 1px solid var(--primaryColor);
+    transition: var(--mainTransition);
+    cursor: pointer;
+}
+
+.banner-btn:hover {
+    background: transparent;
+    color: var(--primaryColor);
+}
