@@ -1,4 +1,4 @@
-const saludar = (nombre)=> {
+const saludar = ()=> {
     let pregunta = prompt("Ingrese su nombre");
     let saludo = `Hola ${pregunta}! Bienvenido/a a Lemonies!`;
     alert(saludo);
@@ -7,23 +7,32 @@ const saludar = (nombre)=> {
 saludar()
 
 class Facturas {
-	constructor(nombre, precio){
+	constructor(nombre, precio, relleno){
 		this.nombre = nombre.toUpperCase();
 		this.precio = parseFloat(precio);
+        this.relleno = relleno;
 	}
 	mostrarFacturas(){
 		alert(this.nombre + " $ " +this.precio);
 	}
 }
 
-const croissant = new Facturas ("Croissant", 250);
-const panChocolat = new Facturas ("Pan Chocolate", 280);
-const chausson = new Facturas ("Chausson", 350);
+const productos = [];
+
+const croissant = new Facturas ("Croissant", 250, false);
+const panChocolat = new Facturas ("Pan Chocolate", 280, "chocolate");
+const chausson = new Facturas ("Chausson", 350, "manzana");
 
 croissant.mostrarFacturas();
 panChocolat.mostrarFacturas();
 chausson.mostrarFacturas();
+productos.push(croissant,panChocolat,chausson);
 
+for (const nombreProductos of productos){
+    console.log(nombreProductos.nombre);
+}
+
+console.table(productos);
 
 /* for (const croissantPrecio in croissant){
     console.log(croissant[croissantPrecio]);
