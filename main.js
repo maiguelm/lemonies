@@ -25,13 +25,14 @@ class CajaTortas extends Pasteleria {
 }
 
 const productos = [];
+const saboresTortitas = ["lemon pie", "coco", "valeria", "ricota"];
 
 const croissant = new Pasteleria ("Croissant", 250, false);
 const panChocolat = new Pasteleria ("Pan Chocolate", 280, "chocolate");
 const chausson = new Pasteleria ("Chausson", 350, "manzana");
 const balcarce = new Pasteleria ("Postre Balcarce", 1250, "dulce de leche, crema y nueces");
 const alfajor = new Pasteleria ("Alfajor", 300, "dulce de leche");
-const cajaTortitas = new CajaTortas ("Caja de Tortitas", 1000, "ricota, dulce de leche, limon", "lemon pie, coco, valeria, ricota, manzana, frutilla");
+const cajaTortitas = new CajaTortas ("Caja de Tortitas", 1000, "ricota, dulce de leche, limon", saboresTortitas);
 
 
 
@@ -40,6 +41,8 @@ panChocolat.mostrarPasteleria();
 chausson.mostrarPasteleria(); */
 
 productos.push(croissant,panChocolat,chausson,balcarce,alfajor,cajaTortitas);
+saboresTortitas.push("manzana", "frutilla");
+
 
 const exhibirPrecios = productos.map ((prod) =>  {
     let exhibicion = prod.nombre + " $" + prod.precio;
@@ -54,7 +57,7 @@ for (const nombreProductos of productos){
 }
 
 console.table(productos);
-
+console.log(saboresTortitas);
 
 let valor = 0;
 
