@@ -1,16 +1,18 @@
-const saludar = ()=> {
+/* const saludar = ()=> {
     let pregunta = prompt("Ingrese su nombre");
     let saludo = `Hola ${pregunta}! Bienvenido/a a Lemonies!`;
     alert(saludo);
 } 
 
-saludar()
+saludar() */
 
 class Pasteleria {
-	constructor(nombre, precio, relleno){
+	constructor(id, imagen, nombre, precio, descripcion){
+        this.id = id;
+        this.imagen = imagen;
 		this.nombre = nombre.toUpperCase();
 		this.precio = parseFloat(precio);
-        this.relleno = relleno;
+        this.descripcion = descripcion;
 	}
 	mostrarPasteleria(){
 		alert(this.nombre + " $ " +this.precio);
@@ -18,8 +20,8 @@ class Pasteleria {
 }
 
 class CajaTortas extends Pasteleria {
-    constructor(nombre, precio, relleno, sabor){
-        super(nombre, precio, relleno)
+    constructor(id, imagen, nombre, precio, descripcion, sabor){
+        super(id, imagen, nombre, precio, descripcion, sabor)
         this.sabor = sabor;
     }
 }
@@ -27,12 +29,12 @@ class CajaTortas extends Pasteleria {
 const productos = [];
 const saboresTortitas = ["lemon pie", "coco", "valeria", "ricota"];
 
-const croissant = new Pasteleria ("Croissant", 250, false);
-const panChocolat = new Pasteleria ("Pan Chocolate", 280, "chocolate");
-const chausson = new Pasteleria ("Chausson", 350, "manzana");
-const balcarce = new Pasteleria ("Postre Balcarce", 1250, "dulce de leche, crema y nueces");
-const alfajor = new Pasteleria ("Alfajor", 300, "dulce de leche");
-const cajaTortitas = new CajaTortas ("Caja de Tortitas", 1000, "ricota, dulce de leche, limon", saboresTortitas);
+const croissant = new Pasteleria (1,'./images/croissant.jpg', "Croissant", 250, "Un verdadero Croissant de manteca, con un proceso de elaboracion de tres días");
+const panChocolat = new Pasteleria (2, "./images/pain.jpg","Pan Chocolate", 280, "Un delicioso Pain Aux Chocolat, una especialidad verdaderamente hojaldrada");
+const chausson = new Pasteleria (3, "./images/chausson.jpg" ,"Chausson", 350, "Exisita Vionnoserie rellena de una compoa de manzanas y canela");
+const balcarce = new Pasteleria (4, "./images/balcarce.jpg","Postre Balcarce", 1250, "Clásico postre elaborado con merengue, crema de leche,dulce de leche, piononos y nueces. Extra-sweet!");
+const alfajor = new Pasteleria (5, "./images/alfajor.jpg","Alfajor", 300, "Otro clásico: el alfajor marplatense3, relleno de dulce de leche y bañado en chocolate cobretura semi-amargo");
+const cajaTortitas = new CajaTortas (6, "./images/cajatortitas.jpg","Caja de Tortitas", 1000, "Exclusiva Caja de Tortitas, de seis unidades a eleccion! Se puede elegir entre varios sabores! ", saboresTortitas);
 
 
 
@@ -49,7 +51,7 @@ const exhibirPrecios = productos.map ((prod) =>  {
     return exhibicion   
 }) 
 
-alert(exhibirPrecios.join("\n"));
+/* alert(exhibirPrecios.join("\n")); */
 
 
 for (const nombreProductos of productos){
@@ -59,7 +61,7 @@ for (const nombreProductos of productos){
 console.table(productos);
 console.log(saboresTortitas);
 
-let valor = 0;
+/* let valor = 0;
 
 function carritoCompras() {
     while (Pasteleria != "S") {
@@ -122,7 +124,7 @@ if (valor == 0){
    alert("Total a pagar $ "+valor + ". Gracias por su compra!!");
 }
 
-console.log(exhibirPrecios)  // es un nuevo array que tiene el nombre del producto y el precio, todo junto como un unico string
+console.log(exhibirPrecios)  // es un nuevo array que tiene el nombre del producto y el precio, todo junto como un unico string */
 
 const nuevosPrecios = productos.map ((aumento) => {
     return {
@@ -132,3 +134,24 @@ const nuevosPrecios = productos.map ((aumento) => {
 })
 
 console.log(nuevosPrecios);
+
+
+let cartas = document.getElementById("cartas");
+const fragment = document.createDocumentFragment();
+
+for (const producto of productos){
+    let carta = document.createElement("div")
+    carta.classname = "card h-100";
+    carta.innerHTML = `
+    <img class="card-img-top" src=${producto.imagen}>
+    <div class="card-body">
+        <h3 class="card-title tituloProductos">${producto.nombre}</h3>
+        <p class="card-text descripcionProductos">${producto.descripcion}</p>
+        <p class="precio">Precio: $ ${producto.precio}</p>
+        <div class="d-grid gap-2 col-6 mx-auto">
+            <a href="#" class="btn btn-success btn-large buttonPropierties" type="button">Agregar al carrito</a>
+        </div>
+    `;
+    fragment.appendChild(carta);
+}
+cartas.appendChild(fragment)
