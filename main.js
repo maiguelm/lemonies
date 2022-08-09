@@ -6,6 +6,11 @@
 
 saludar() */
 
+const productos = [];
+const saboresTortitas = ["lemon pie", "coco", "valeria", "ricota"];
+const carrito = [];
+const usuario = [];
+
 class Pasteleria {
 	constructor(id, imagen, nombre, precio, descripcion){
         this.id = id;
@@ -26,8 +31,7 @@ class CajaTortas extends Pasteleria {
     }
 }
 
-const productos = [];
-const saboresTortitas = ["lemon pie", "coco", "valeria", "ricota"];
+
 
 const croissant = new Pasteleria (1,'./images/croissant.jpg', "Croissant", 250, "Un verdadero Croissant de manteca, con un proceso de elaboracion de tres días");
 const panChocolat = new Pasteleria (2, "./images/pain.jpg","Pan Chocolate", 280, "Un delicioso Pain Aux Chocolat, una especialidad verdaderamente hojaldrada");
@@ -136,22 +140,51 @@ const nuevosPrecios = productos.map ((aumento) => {
 console.log(nuevosPrecios);
 
 
-let cartas = document.getElementById("cartas");
-const fragment = document.createDocumentFragment();
+const cartas = document.getElementById("cartas");
+const cargaCartas = document.createDocumentFragment();
 
 for (const producto of productos){
     let carta = document.createElement("div")
     carta.classname = "card h-100";
     carta.innerHTML = `
-    <img class="card-img-top" src=${producto.imagen}>
+    <img class="card-img-top" src=${producto.imagen} alt= 'imagen de ${producto.nombre}'>
     <div class="card-body">
         <h3 class="card-title tituloProductos">${producto.nombre}</h3>
         <p class="card-text descripcionProductos">${producto.descripcion}</p>
         <p class="precio">Precio: $ ${producto.precio}</p>
         <div class="d-grid gap-2 col-6 mx-auto">
-            <a href="#" class="btn btn-success btn-large buttonPropierties" type="button">Agregar al carrito</a>
+            <button class="btn btn-success btn-large buttonPropiedades" id="agregar${producto.id}" type="button">Agregar al carrito</button>
         </div>
     `;
-    fragment.appendChild(carta);
+    cargaCartas.appendChild(carta);
+    cartas.appendChild(cargaCartas)
+
+
+    const botonAgregar = document.getElementById(`agregar${producto.id}`);
+
+    botonAgregar.addEventListener("click", respuesta);
+        function respuesta (){
+            console.log("Agregaste el producto al carrito");
+            carrito.push(producto.nombre);
+        }
 }
-cartas.appendChild(fragment)
+
+const botonBanner = document.querySelector(".banner-btn")
+
+botonBanner.onclick = () => {
+    location.href = "#productos";
+}
+
+
+const formularioNombre = document.querySelector(".nombreForm");
+const telefonoFormulario = document.querySelector(".telForm");
+
+formularioNombre.onchange = function () {
+    console.log(formularioNombre.value);
+    usuario.push(formularioNombre.value)
+}
+
+telefonoFormulario.onchange = function () {
+    console.log(telefonoFormulario.value);
+    usuario.push(telefonoFormulario.value)
+}

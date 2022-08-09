@@ -1,29 +1,29 @@
 html {
-	font-size: 62.5%; 
-}
-  
-* {
-	box-sizing: border-box;
-	padding: 0;
-	margin: 0;
-	color: #fff; 
-}
-  
-body {
-	background: rgb(93, 93, 93); 
+    font-size: 62.5%;
 }
 
-main{
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    color: #fff;
+}
+
+body {
+    background: rgb(93, 93, 93);
+}
+
+main {
     padding: 0 30vh 0 30vh;
 }
 
-section{
+section {
     padding: 10vh 0 2vh 0;
 }
-  
-#navPosition{
+
+#navPosition {
     background: rgb(7, 4, 4);
-	position: sticky;
+    position: sticky;
     top: 0;
     height: 150px;
     width: 100%;
@@ -33,40 +33,51 @@ section{
 .navbar-center {
     width: 100%;
     max-width: 1300px;
-	height: 150px;
+    height: 150px;
     margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 1.5rem;
 }
-.barraNavegacion{
+
+.barraNavegacion {
     display: inline-block;
-    position:absolute;
+    position: absolute;
     right: 1rem;
     top: 1rem;
 }
+
 .btn__navflex {
-    flex-direction: column;
-	justify-content: flex-end !important;
+    flex-direction: row-reverse;
+    justify-content: flex-start !important;
     color: #000;
 }
+
 .enlacesBarra {
-	margin-top: 15px;
-	border-radius: 5px; 
-}
-.enlacesBarra ul {
-	list-style: none; 
-}
-.enlacesBarra ul li {
-	padding: 5px; 
-}
-a {
-	color: #d7d7d7;
-	font-family: "Raleway", sans-serif;
-	font-size: 2rem; 
+    margin-top: 1rem;
+    border-radius: 5px;
 }
 
+.enlacesBarra ul {
+    list-style: none;
+}
+
+.enlacesBarra ul li {
+    padding: 5px;
+    background-color: rgb(7, 4, 4);
+    border-radius: 2px;
+}
+
+a {
+    color: #d7d7d7;
+    font-family: "Raleway", sans-serif;
+    font-size: 2rem;
+}
+
+a:hover {
+    color: rgb(82, 56, 56)
+}
 
 .nav-icon {
     font-size: 1.5rem;
@@ -90,8 +101,8 @@ a {
 .fotoFondo {
     min-height: 100vh;
     background: url("./images/wallpaper.jpg");
-	background-repeat: no-repeat;
-	background-size: cover;
+    background-repeat: no-repeat;
+    background-size: cover;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -128,23 +139,25 @@ a {
     color: var(--primaryColor);
 }
 
-.tituloProductos{
-    color:#000;
+.tituloProductos {
+    color: #000;
     font-size: 2.5rem;
     padding: 10px;
 }
-.descripcionProductos{
+
+.descripcionProductos {
     color: #000;
     font-size: 2rem;
     padding: 10px;
 }
-.buttonPropierties{
+
+.buttonPropiedades {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-size: 1.5rem;
     margin-bottom: 30px;
 }
 
-.precio{
+.precio {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-size: 1.8rem;
     font-weight: 500;
@@ -152,35 +165,87 @@ a {
     padding: 10px;
 }
 
-p{
+p {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-size: 2rem;
 }
-.icons__redes{
+
+.icons__redes {
     list-style: none;
     display: flex;
     justify-content: space-evenly;
     padding-top: 10px;
 }
-.fa-telegram, .fa-facebook, .fa-instagram{
-        font-size: 40px;
-        color:  #b6a2a2;
+
+.fa-telegram,
+.fa-facebook,
+.fa-instagram {
+    font-size: 40px;
+    color: #b6a2a2;
 }
-.fa-whatsapp-square{
+
+.fa-whatsapp-square {
     font-size: 50px;
     position: fixed;
     right: 10px;
     bottom: 10px;
     color: rgb(48, 204, 48);
-    @media only screen and (max-width: 950px){
+
+    @media only screen and (max-width: 950px) {
         font-size: 40px;
-    } 
+    }
 }
-.fraseFooter{
+
+.fraseFooter {
     padding: 10px;
     font-size: 1.5rem;
 }
-.fa-registered{
+
+.fa-registered {
     padding: 5px;
 }
 
+.galeriaFotos{
+    margin: 0 auto;
+}
+
+.form__margin {
+    padding: 15px;
+    display: flex; 
+}
+.form__margin form {
+      margin: 0 auto;
+      width: 400px;
+      padding: 1em;
+      border: 2px solid black;
+      border-radius: 1em; 
+}
+.form__margin form label {
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+        font-family: "Lilita One", serif;
+        font-size: 1.8em;
+        color: #d4c0c0;
+}
+.form__margin form input, form__margin form textarea {
+        font: 1.8em sans-serif !important;
+        width: 100%;
+        box-sizing: border-box;
+        border: 1px solid #999; 
+}
+.form__margin form button {
+        width: 100%;
+        margin: 0 auto;
+        font-family: 'Lilita One', serif;
+        font-size: 1.5em; 
+}
+.form__margin form button:hover {
+          background-color: #000;
+          color: #fff; 
+}
+.form__margin form button:focus {
+          background-color: #6e4444;
+          color: #b9a0a0; 
+}
+ 
