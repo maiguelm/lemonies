@@ -1,15 +1,17 @@
-/* const saludar = ()=> {
-    let pregunta = prompt("Ingrese su nombre");
-    let saludo = `Hola ${pregunta}! Bienvenido/a a Lemonies!`;
-    alert(saludo);
-} 
-
-saludar() */
-
 const productos = [];
 const saboresTortitas = ["lemon pie", "coco", "valeria", "ricota"];
 const carrito = [];
 const usuario = [];
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem("carroCompras")){
+        let carro = JSON.parse(localStorage.getItem("carroCompras"))
+        console.log(carro);
+        enElCarrito();
+    }
+}) 
+
 
 class Pasteleria {
 	constructor(id, imagen, nombre, precio, descripcion, cantidad){
@@ -42,11 +44,6 @@ const alfajor = new Pasteleria (5, "./images/alfajor.jpg","Alfajor", 300, "Otro 
 const cajaTortitas = new CajaTortas (6, "./images/cajatortitas.jpg","Caja de Tortitas", 1000, "Exclusiva Caja de Tortitas, de seis unidades a eleccion! Se puede elegir entre varios sabores! ", 1, saboresTortitas);
 
 
-
-/* croissant.mostrarPasteleria();
-panChocolat.mostrarPasteleria();
-chausson.mostrarPasteleria(); */
-
 productos.push(croissant,panChocolat,chausson,balcarce,alfajor,cajaTortitas);
 saboresTortitas.push("manzana", "frutilla");
 
@@ -56,89 +53,21 @@ const exhibirPrecios = productos.map ((prod) =>  {
     return exhibicion   
 }) 
 
-/* alert(exhibirPrecios.join("\n")); */
-
-
-for (const nombreProductos of productos){
+/* for (const nombreProductos of productos){
     console.log(nombreProductos.nombre);
-}
+} */
 
-console.table(productos);
+/* console.table(productos);
 console.log(saboresTortitas);
-
-/* let valor = 0;
-
-function carritoCompras() {
-    while (Pasteleria != "S") {
-        switch (Pasteleria) {
-            case "CROISSANT":
-                console.log("El croissant cuesta $250");
-                valor += croissant.precio;
-                break;
-            case "PAN CHOCOLATE":
-                console.log("El Pain aux chocolat cuesta $280");
-                valor += panChocolat.precio;
-                break;
-            case "CHAUSSON":
-                console.log("El Chausson aux Pommes cuesta $350");
-                valor += chausson.precio;
-                break;
-            case "POSTRE BALCARCE":
-                console.log("El Postre Balcarce cuesta $1.250");
-                valor += balcarce.precio;
-                break;
-            case "ALFAJOR":
-                console.log("El Alfajor Marplatense cuesta $300");
-                valor += alfajor.precio;
-                break;
-            case "CAJA DE TORTITAS":
-                console.log("La caja de tortitas cuesta $1.000");
-                valor += cajaTortitas.precio;
-                break;
-            default:
-                console.log("No elaboramos aún esa Factura o verifique el valor ingresado");
-                break;
-        }
-        while (Pasteleria == "CAJA DE TORTITAS"){
-            let saborElegido = prompt("Seleccione entre alguna de las siguientes opciones: \nlemon pie \ncoco \nvaleria \nricota \nmanzana \nfrutilla").toUpperCase();
-            console.log("El sabor elegido para sus tortitas es " + saborElegido);
-            break
-        }
-        Pasteleria = prompt("Ingresa el producto y cargalo en el carrito (s-para salir) \ncroissant \npan chocolate \nchausson \npostre Balrcarce \nalfajor \ncaja de tortitas").toUpperCase();
-    }
-}
-
-carritoCompras();
-
-let nuevaBusqueda = prompt("Que otro producto desea buscar?").toUpperCase();
-let otroProducto = productos.some (producto =>producto.nombre === nuevaBusqueda);
-
-
-if (otroProducto === false){
-   alert("No elaboramos el producto solicitado o verifique el valor ingresado");
-} else{
-    alert("Lo que Ud. pide está en stock. Aguardamos su compra");
-}
-
-if (valor == 0){
-    alert("Gracias por su visita!");
-} else if (valor > 1800){
-    let descuento = valor * 0.85;
-    alert("Ud. recibe un descuento del 15%, por lo que abonará $ " + descuento +". Gracias por su compra!");
-} else {
-   alert("Total a pagar $ "+valor + ". Gracias por su compra!!");
-}
-
-console.log(exhibirPrecios)  // es un nuevo array que tiene el nombre del producto y el precio, todo junto como un unico string */
-
-const nuevosPrecios = productos.map ((aumento) => {
+ */
+/* const nuevosPrecios = productos.map ((aumento) => {
     return {
         nombre: aumento.nombre,
         precio: (aumento.precio * 1.35).toFixed(2)
     }
 })
 
-console.log(nuevosPrecios);
+console.log(nuevosPrecios); */
 
 
 const cartas = document.getElementById("cartas");
@@ -172,12 +101,6 @@ productos.forEach((producto) => {
         agregarAlCarrito(producto.id)
     })
 
-
-    // botonAgregar.addEventListener("click", respuesta);
-    //     function respuesta (){
-    //         console.log("Agregaste el producto al carrito");
-    //         carrito.push(producto.nombre);
-    //     }
 })
 
 const agregarAlCarrito = (prodId) => {
@@ -194,32 +117,45 @@ const agregarAlCarrito = (prodId) => {
     }
 
     enElCarrito();
-    console.log(carrito);
+/*     console.log(carrito); */
 }
 
 const enElCarrito = () => {
     contenedorCarrito.innerHTML = "";
+
     carrito.forEach((prod) => {
         const div = document.createElement("div")
         div.className = ("productoEnCarrito")
         div.innerHTML =  `
         <p class="pModal">${prod.nombre} </p>
         <p class="pModal">Precio: $ ${prod.precio}</p>
-        <p class="pModal">Cantidad: <span id="cantidad">${prod.cantidad}</span></p>
+        <p class="pModal">Cantidad: <input id="cantidad-${prod.id}" type="number" value="${prod.cantidad}" min="1" max="1000" step="1" style="color: #000;"/></p>
         <button onclick="sacarCarrito(${prod.id})" class="boton-eliminar"><i class="fas fa-trash-alt"></i>Eliminar</button>
         `
-        contenedorCarrito.appendChild(div)
+        contenedorCarrito.appendChild(div)   
+
+        let cantidadProductos = document.getElementById(`cantidad-${prod.id}`);
+        cantidadProductos.addEventListener("change", (e) => {
+            let nuevaCantidad = e.target.value;
+            prod.cantidad = nuevaCantidad;
+            enElCarrito();
+        });
+
+        itemsCarrito.innerText = carrito.length;
+        localStorage.setItem("carroCompras", JSON.stringify(carrito));
     })
-    itemsCarrito.innerText = carrito.length
-    precioFinal.innerText = carrito.reduce((acc, prod) => acc + prod.precio, 0);
+
+
+    precioFinal.innerText = carrito.reduce((acc, prod) => acc + (prod.precio*prod.cantidad), 0);
+ 
 }
+
 
 const sacarCarrito = (prodId) =>{
     const item = carrito.find ((prod) => prod.id === prodId);
     const i = carrito.indexOf(item);
     carrito.splice(i, 1)
     enElCarrito();
-    console.log(carrito)
 }
 
 vaciarCarrito.addEventListener("click", () =>{
@@ -260,9 +196,9 @@ telefonoFormulario.onchange = function () {
 const openModal = document.querySelector('.abrirCarrito');
 const modal = document.querySelector('.miModal');
 const closeModal = document.querySelector('.cerrarCarrito');
+const modalCarrito = document.querySelector('.modalContenedor')
 
 openModal.addEventListener('click', (e)=>{
-    alert("hiciste click")
     e.preventDefault();
     modal.classList.add('modal--show');
 });
