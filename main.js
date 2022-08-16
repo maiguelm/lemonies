@@ -1,13 +1,14 @@
 const productos = [];
 const saboresTortitas = ["lemon pie", "coco", "valeria", "ricota"];
-const carrito = [];
+let carrito = []
 const usuario = [];
+
 
 
 document.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem("carroCompras")){
-        let carro = JSON.parse(localStorage.getItem("carroCompras"))
-        console.log(carro);
+        carrito = JSON.parse(localStorage.getItem("carroCompras"))
+        console.log(carrito);
         enElCarrito();
     }
 }) 
@@ -160,12 +161,14 @@ const sacarCarrito = (prodId) =>{
 
 vaciarCarrito.addEventListener("click", () =>{
     carrito.length = 0;
+    localStorage.clear();
+    itemsCarrito.innerText = 0;
     enElCarrito();
 })
 
 
 
-const botonBanner = document.querySelector(".banner-btn")
+const botonBanner = document.querySelector(".banner-title")
 
 botonBanner.addEventListener ("mousedown", () => {
     location.href = "#productos";
