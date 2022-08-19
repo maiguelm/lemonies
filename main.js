@@ -1,6 +1,7 @@
 const productos = [];
 const saboresTortitas = ["lemon pie", "coco", "valeria", "ricota"];
 let carrito = []
+// const carrito = JSON.parse(localStorage.getItem("carroCompras")) || [];
 const usuario = [];
 
 
@@ -76,8 +77,11 @@ const cargaCartas = document.createDocumentFragment();
 const contenedorCarrito = document.getElementById("carritoContenedor");
 const vaciarCarrito = document.getElementById("vaciar-carrito");
 const itemsCarrito = document.getElementById("cart-items");
+const precioProducto = document.getElementsByClassName("precioProducto")
 const precioFinal = document.getElementById("precioTotal");
 const cantidad = document.getElementById("cantidad");
+const botonComprar = document.getElementById("comprar-carrito");
+const contenedorTortitas = document.getElementById("contenedorTortitas")
 
 productos.forEach((producto) => {
     let carta = document.createElement("div")
@@ -116,13 +120,12 @@ const agregarAlCarrito = (prodId) => {
         const item = productos.find ((prod) => prod.id === prodId);
         carrito.push(item);
     }
-
     enElCarrito();
 /*     console.log(carrito); */
 }
 
 const enElCarrito = () => {
-    contenedorCarrito.innerHTML = "";
+    contenedorCarrito.innerHTML = "";  
 
     carrito.forEach((prod) => {
         const div = document.createElement("div")
@@ -166,7 +169,33 @@ vaciarCarrito.addEventListener("click", () =>{
     enElCarrito();
 })
 
+botonComprar.addEventListener("click", ()=>{
+    carrito.length = 0
+    localStorage.clear();
+    itemsCarrito.innerText = 0;
+    console.log(carrito);
+    enElCarrito();
+})
 
+
+// funcion para seleccionar sabores de tortitas
+
+// function seleccionTortitas() {
+//     contenedorTortitas.innerHTML = "";  
+//     productos.forEach((producto) => {
+//         // const div = document.createElement("div")
+//         // div.className = ("productoEnCarrito")
+//         // div.innerHTML =  `
+//         // <p class="pModal">${prod.nombre} </p>
+//         // <p class="pModal">Precio: $ ${prod.precio}</p>
+//         // <p class="pModal">Cantidad: <input id="cantidad-${prod.id}" type="number" value="${prod.cantidad}" min="1" max="1000" step="1" style="color: #000;"/></p>
+//         // <button onclick="sacarCarrito(${prod.id})" class="boton-eliminar"><i class="fas fa-trash-alt"></i>Eliminar</button>
+//         // `
+//         // contenedorCarrito.appendChild(div)   
+//         document.getElementById(`agregar${producto.id[6]}`).addEventListener("click",consle.log("Elegir tortitas"))
+//     })
+// }
+// seleccionTortitas();
 
 const botonBanner = document.querySelector(".banner-title")
 

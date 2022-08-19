@@ -281,6 +281,13 @@ p {
     --transform: translateY(0);
     --transition: transform .8s .8s;
 }
+.modal--showDos{
+    opacity: 1;
+    pointer-events: unset;
+    transition: opacity .6s;
+    --transform: translateY(0);
+    --transition: transform .8s .8s;
+}
 
 .modalContenedor{
     margin: auto;
