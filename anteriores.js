@@ -78,3 +78,6 @@ if (valor == 0){
 }
 
 console.log(exhibirPrecios)  // es un nuevo array que tiene el nombre del producto y el precio, todo junto como un unico string */
+
+
+
