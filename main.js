@@ -13,6 +13,13 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 
+document.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem("usuario")) {
+        usuario = JSON.parse(localStorage.getItem("usuario"));
+        console.log(usuario);
+    }
+})
+
 class Pasteleria {
     constructor(id, imagen, nombre, precio, descripcion, cantidad) {
         this.id = id;
@@ -100,14 +107,14 @@ productos.forEach((producto) => {
 
 
     const botonAgregar = document.getElementById(`agregar${producto.id}`);
-
+    
     botonAgregar.addEventListener("click", () => {
         if (producto.cantidad === 0) {
             Swal.fire({
                 title: 'Disulpas!!',
                 text: 'No contamos con stock',
                 imageUrl: './images/emojidecepcion.webp',
-                imageWidth: 400,
+                imageWidth: 200,
                 imageHeight: 200,
                 imageAlt: 'Custom image',
               })
@@ -162,6 +169,7 @@ const enElCarrito = () => {
         <p class="pModal">Cantidad: <input id="cantidad-${prod.id}" type="number" value="${prod.cantidad}" min="1" max="1000" step="1" style="color: #000;"/></p>
         <button onclick="sacarCarrito(${prod.id})" class="boton-eliminar"><i class="fas fa-trash-alt"></i>Eliminar</button>
         `
+
         const { sabor } = cajaTortitas;
         console.log(sabor);
 
