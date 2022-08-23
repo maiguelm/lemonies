@@ -80,4 +80,18 @@ if (valor == 0){
 console.log(exhibirPrecios)  // es un nuevo array que tiene el nombre del producto y el precio, todo junto como un unico string */
 
 
+/* for (const nombreProductos of productos){
+    console.log(nombreProductos.nombre);
+} */
 
+/* console.table(productos);
+console.log(saboresTortitas);
+ */
+/* const nuevosPrecios = productos.map ((aumento) => {
+    return {
+        nombre: aumento.nombre,
+        precio: (aumento.precio * 1.35).toFixed(2)
+    }
+})
+
+console.log(nuevosPrecios); */

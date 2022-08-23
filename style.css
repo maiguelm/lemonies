@@ -347,3 +347,8 @@ p {
 .boton-eliminar, .fa-trash-alt{
     color:#000
 }
+
+.parrCarroVacio{
+    color: #000;
+    display: inline-block;
+}
