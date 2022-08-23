@@ -155,7 +155,7 @@ const agregarAlCarrito = (prodId) => {
 
 function carroVacio () {
 
-    carrito.length === 0 ? carritoContenedor.innerHTML += `<h2 class="parrCarroVacio">Tu carrito está vacio</h2>` : console.log("carrovacio");
+    carrito.length === 0 ? carritoContenedor.innerHTML += `<h2 class="parrCarroVacio">Tu carrito está vacio</h2>` : console.log("El carro no está vacio");
 }
 
 
