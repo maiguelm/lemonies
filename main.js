@@ -1,5 +1,6 @@
 const productos = [];
 const saboresTortitas = ["lemon pie", "coco", "valeria", "ricota"];
+let tortitasElegidas = [];
 let carrito = [];
 let usuario = [];
 
@@ -12,7 +13,6 @@ const precioProducto = document.getElementsByClassName("precioProducto");
 const precioFinal = document.getElementById("precioTotal");
 const cantidad = document.getElementById("cantidad");
 const botonComprar = document.getElementById("comprar-carrito");
-const contenedorTortitas = document.getElementById("contenedorTortitas");
 const iconoCarrito = document.getElementsByClassName("nav-icon");
 
 const formularioNombre = document.querySelector(".nombreForm");
@@ -98,8 +98,9 @@ productos.forEach((producto) => {
             <button class="btn btn-success btn-large buttonPropiedades" id="agregar${producto.id}" type="button">Agregar al carrito</button>
         </div>
     `;
+
     cargaCartas.appendChild(carta);
-    cartas.appendChild(cargaCartas)
+    cartas.appendChild(cargaCartas);
 
 
     const botonAgregar = document.getElementById(`agregar${producto.id}`);
@@ -172,10 +173,7 @@ const enElCarrito = () => {
         <button onclick="sacarCarrito(${prod.id})" class="boton-eliminar"><i class="fas fa-trash-alt"></i>Eliminar</button>
         `
 
-        const { sabor } = cajaTortitas;
-        console.log(sabor);
-
-        contenedorCarrito.appendChild(div)
+        contenedorCarrito.appendChild(div);
 
         let cantidadProductos = document.getElementById(`cantidad-${prod.id}`);
         cantidadProductos.addEventListener("change", (e) => {
@@ -184,6 +182,46 @@ const enElCarrito = () => {
             enElCarrito();
         });
 
+        if (prod === cajaTortitas){
+
+            const sabores = saboresTortitas.map(sabores => sabores.toUpperCase());
+            const divSabores = document.createElement("div");
+            divSabores.className = ("divSabores")
+            divSabores.innerHTML += `
+                <select name="sabores" class="form-select sabores">
+                    <option value="${sabores}[0]}">${sabores[0]}</option>
+                    <option value="${sabores}[1]}">${sabores[1]}</option>
+                    <option value="${sabores}[2]}">${sabores[2]}</option>
+                    <option value="${sabores}[3]}">${sabores[3]}</option>
+                    <option value="${sabores}[4]}">${sabores[4]}</option>
+                    <option value="${sabores}[5]}">${sabores[5]}</option>
+                </select>
+                <input id="cantidad-saboresTortitas" type="number" value="2" min="0" max="6" step="2" style="color: #000;"/>
+                <select name="sabores" class="form-select saboresDos">
+                    <option value="${sabores}[0]}">${sabores[0]}</option>
+                    <option value="${sabores}[1]}">${sabores[1]}</option>
+                    <option value="${sabores}[2]}">${sabores[2]}</option>
+                    <option value="${sabores}[3]}">${sabores[3]}</option>
+                    <option value="${sabores}[4]}">${sabores[4]}</option>
+                    <option value="${sabores}[5]}">${sabores[5]}</option>
+                </select>
+                <input id="cantidad-saboresTortitasDos" type="number" value="2" min="0" max="6" step="2" style="color: #000;"/>
+                <select name="sabores" class="form-select saboresTres">
+                    <option value="${sabores}[0]}">${sabores[0]}</option>
+                    <option value="${sabores}[1]}">${sabores[1]}</option>
+                    <option value="${sabores}[2]}">${sabores[2]}</option>
+                    <option value="${sabores}[3]}">${sabores[3]}</option>
+                    <option value="${sabores}[4]}">${sabores[4]}</option>
+                    <option value="${sabores}[5]}">${sabores[5]}</option>
+                </select>
+                <input id="cantidad-saboresTortitasTres" type="number" value="2" min="0" max="6" step="2" style="color: #000;"/>
+                <button onclick="seleccionar" class="btn btn-success btn-sm" type="button">Seleccionar</button>
+            `;
+            contenedorCarrito.appendChild(divSabores);
+        
+    
+            console.log("debe seleccionar sabores de tortitas")
+        }
         itemsCarrito.innerText = carrito.length;
         localStorage.setItem("carroCompras", JSON.stringify(carrito));
     })
@@ -217,26 +255,6 @@ botonComprar.addEventListener("click", () => {
     console.log(carrito);
     enElCarrito();
 })
-
-
-// funcion para seleccionar sabores de tortitas
-
-// function seleccionTortitas() {
-//     contenedorTortitas.innerHTML = "";  
-//     productos.forEach((producto) => {
-//         const div = document.createElement("div")
-//         div.className = ("productoEnCarrito")
-//         div.innerHTML =  `
-//         <p class="pModal">${prod.nombre} </p>
-//         <p class="pModal">Precio: $ ${prod.precio}</p>
-//         <p class="pModal">Cantidad: <input id="cantidad-${prod.id}" type="number" value="${prod.cantidad}" min="1" max="1000" step="1" style="color: #000;"/></p>
-//         <button onclick="sacarCarrito(${prod.id})" class="boton-eliminar"><i class="fas fa-trash-alt"></i>Eliminar</button>
-//         `
-//         contenedorCarrito.appendChild(div)   
-//         document.getElementById(`agregar${producto.id[6]}`).addEventListener("click",consle.log("Elegir tortitas"))
-//     })
-// }
-// seleccionTortitas();
 
 
 const botonBanner = document.querySelector(".banner-title")
