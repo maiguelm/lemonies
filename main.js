@@ -237,7 +237,7 @@ vaciarCarrito.addEventListener("click", () => {
 
 botonComprar.addEventListener("click", () => {
     compraRealizada.push(carrito);
-    console.log(carrito);
+    console.log(compraRealizada);
     carrito.length = 0
     localStorage.removeItem("carroCompras");
     itemsCarrito.innerText = 0;
