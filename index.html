@@ -152,32 +152,34 @@
 			<h2>CONTACTANOS</h2>
 			<div class="formulario">
 				<div class="form__margin">
-					<form>
+					<form id="form">
 						<div class="mb-3">
 							<label for="exampleFormControlInput1" class="form-label label__margin">Nombre</label>
-							<input type="text" class="form-control nombreForm" id="exampleFormControlInput1"
-								placeholder="Introduzca su nombre" required>
+							<input type="text" class="form-control nombreForm" id="name"
+								placeholder="Introduzca su nombre" name="name" required>
 						</div>
 						<div class="mb-3">
 							<label for="exampleFormControlInput1" class="form-label">Correo electrónico</label>
-							<input type="email" class="form-control" id="exampleFormControlInput1"
-								placeholder="sucorreo@sucorreo.com.ar" required>
+							<input type="email" class="form-control" id="email"
+								placeholder="sucorreo@sucorreo.com.ar" name="email" required>
 						</div>
 						<div class="mb-3">
 							<label for="number_phone" class="form-label">Número de Telefóno</label>
-							<input type="number" class="form-control telForm" id="exampleFormControlInput1"
-								placeholder="Introduzca su número de teléfono" required>
+							<input type="number" class="form-control telForm" id="phone"
+								placeholder="Introduzca su número de teléfono" name="phone" required>
 						</div>
 						<div class="mb-3">
 							<label for="exampleFormControlTextarea1" class="form-label">Mensaje</label>
-							<textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
-								placeholder="Deje su mensaje aquí" required></textarea>
+							<textarea class="form-control" id="" rows="3"
+								placeholder="Deje su mensaje aquí" name="message" required></textarea>
 						</div>
-						<button class="btn btn-success btn-large buttonPropiedades" type="submit">Enviar</button>
+						<button id="btnSubmit" class="btn btn-success btn-large buttonPropiedades" type="submit">Enviar</button>
 					</form>
-					<div id="mensajes">
-
-					</div>
+					<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+					
+					<script type="text/javascript">
+						emailjs.init('Od-FpZp72Cg-O2WOv')
+					</script>
 				</div>
 
 

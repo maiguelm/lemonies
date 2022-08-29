@@ -1,9 +1,14 @@
-const productos = [];
-const saboresTortitas = ["lemon pie", "coco", "valeria", "ricota"];
+//DECLARO ARRAYS
+
+let productos = [];
+const saboresTortitas = ["lemon pie", "coco", "valeria", "ricota", "manzana", "frutilla"];
 let tortitasElegidas = [];
 let carrito = [];
 let usuario = [];
+let compraRealizada = [];
 
+
+//TOMO ELEMENTOS DEL DOM
 const cartas = document.getElementById("cartas");
 const cargaCartas = document.createDocumentFragment();
 const contenedorCarrito = document.getElementById("carritoContenedor");
@@ -25,58 +30,38 @@ const closeModal = document.querySelector('.cerrarCarrito');
 const modalCarrito = document.querySelector('.modalContenedor');
 
 
+// INVOCO FUNCIONES
 carroVacio();
 
 
+// TRAIGO EL LOCAL STORAGE DEL CARRITO
 document.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem("carroCompras")) {
         carrito = JSON.parse(localStorage.getItem("carroCompras"));
         console.log(carrito);
         enElCarrito();
     }
+    obtenerStock();
 })
 
-
+// TRAIGO EL LOCAL STORAGE DEL USUARIO
 document.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem("usuario")) {
         usuario = JSON.parse(localStorage.getItem("usuario"));
         console.log(usuario);
+        cardsProductos();
     }
 })
 
-class Pasteleria {
-    constructor(id, imagen, nombre, precio, descripcion, cantidad) {
-        this.id = id;
-        this.imagen = imagen;
-        this.nombre = nombre.toUpperCase();
-        this.precio = parseFloat(precio);
-        this.descripcion = descripcion;
-        this.cantidad = cantidad
-    }
-    mostrarPasteleria() {
-        alert(this.nombre + " $ " + this.precio);
-    }
+//CREO MI STOCK o TRAIGO MI SOTCK
+
+const obtenerStock = async () => {
+    const archivoJSON = "productos.json";
+    const peticion = await fetch(archivoJSON);
+    const respuesta = await peticion.json();
+    productos = respuesta;
+    cardsProductos();
 }
-
-class CajaTortas extends Pasteleria {
-    constructor(id, imagen, nombre, precio, descripcion, cantidad, sabor) {
-        super(id, imagen, nombre, precio, descripcion, cantidad)
-        this.sabor = sabor;
-    }
-}
-
-
-
-const croissant = new Pasteleria(1, './images/croissant.jpg', "Croissant", 250, "Un verdadero Croissant de manteca, con un proceso de elaboracion de tres días", 1);
-const panChocolat = new Pasteleria(2, "./images/pain.jpg", "Pan Chocolate", 280, "Un delicioso Pain Aux Chocolat, una especialidad verdaderamente hojaldrada", 1);
-const chausson = new Pasteleria(3, "./images/chausson.jpg", "Chausson", 350, "Exisita Vionnoserie rellena de una compoa de manzanas y canela", 0);
-const balcarce = new Pasteleria(4, "./images/balcarce.jpg", "Postre Balcarce", 1250, "Clásico postre elaborado con merengue, crema de leche,dulce de leche, piononos y nueces. Extra-sweet!", 1);
-const alfajor = new Pasteleria(5, "./images/alfajor.jpg", "Alfajor", 300, "Otro clásico: el alfajor marplatense3, relleno de dulce de leche y bañado en chocolate cobretura semi-amargo", 1);
-const cajaTortitas = new CajaTortas(6, "./images/cajatortitas.jpg", "Caja de Tortitas", 1000, "Exclusiva Caja de Tortitas, de seis unidades a eleccion! Se puede elegir entre varios sabores! ", 1, saboresTortitas);
-
-
-productos.push(croissant, panChocolat, chausson, balcarce, alfajor, cajaTortitas);
-saboresTortitas.push("manzana", "frutilla");
 
 
 const exhibirPrecios = productos.map((prod) => {
@@ -84,61 +69,66 @@ const exhibirPrecios = productos.map((prod) => {
     return exhibicion
 })
 
+// RENDERIZO LAS CARDS
+function cardsProductos() {
 
-productos.forEach((producto) => {
-    let carta = document.createElement("div")
-    carta.classname = "card h-100";
-    carta.innerHTML = `
-    <img class="card-img-top" src=${producto.imagen} alt= 'imagen de ${producto.nombre}'>
-    <div class="card-body">
-        <h3 class="card-title tituloProductos">${producto.nombre}</h3>
-        <p class="card-text descripcionProductos">${producto.descripcion}</p>
-        <p class="precio">Precio: $ ${producto.precio}</p>
-        <div class="d-grid gap-2 col-6 mx-auto">
-            <button class="btn btn-success btn-large buttonPropiedades" id="agregar${producto.id}" type="button">Agregar al carrito</button>
-        </div>
-    `;
+    productos.forEach((producto) => {
+        let carta = document.createElement("div")
+        carta.classname = "card h-100";
+        carta.innerHTML = `
+        <img class="card-img-top" src=${producto.imagen} alt= 'imagen de ${producto.nombre}'>
+        <div class="card-body">
+            <h3 class="card-title tituloProductos">${producto.nombre}</h3>
+            <p class="card-text descripcionProductos">${producto.descripcion}</p>
+            <p class="precio">Precio: $ ${producto.precio}</p>
+            <div class="d-grid gap-2 col-6 mx-auto">
+                <button class="btn btn-success btn-large buttonPropiedades" id="agregar${producto.id}" type="button">Agregar al carrito</button>
+            </div>
+        `;
 
-    cargaCartas.appendChild(carta);
-    cartas.appendChild(cargaCartas);
+        cargaCartas.appendChild(carta);
+        cartas.appendChild(cargaCartas);
 
 
-    const botonAgregar = document.getElementById(`agregar${producto.id}`);
-    
-    botonAgregar.addEventListener("click", () => {
-        if (producto.cantidad === 0) {
-            Swal.fire({
-                title: 'Disulpas!!',
-                text: 'No contamos con stock',
-                imageUrl: './images/emojidecepcion.webp',
-                imageWidth: 200,
-                imageHeight: 200,
-                imageAlt: 'emoji de decepcion',
-              })
-        } else {
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-right',
-                showConfirmButton: false,
-                timer: 2000,
-                timerProgressBar: false,
-                didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-            })
+        const botonAgregar = document.getElementById(`agregar${producto.id}`);
 
-            Toast.fire({
-                icon: 'success',
-                title: `${producto.nombre} agregado al carrito`
-            })
-            agregarAlCarrito(producto.id)
-        }
+        botonAgregar.addEventListener("click", () => {
+            if (producto.cantidad === 0) {
+                Swal.fire({
+                    title: 'Disulpas!!',
+                    text: 'No contamos con stock',
+                    imageUrl: './images/emojidecepcion.webp',
+                    imageWidth: 200,
+                    imageHeight: 200,
+                    imageAlt: 'emoji de decepcion',
+                })
+            } else {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-right',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: false,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+
+                Toast.fire({
+                    icon: 'success',
+                    title: `${producto.nombre} agregado al carrito`
+                })
+                agregarAlCarrito(producto.id)
+            }
+
+        })
 
     })
+}
 
-})
 
+//FUNCIONALIDAD DEL CARRITO
 const agregarAlCarrito = (prodId) => {
     const existe = carrito.some(prod => prod.id === prodId);
     if (existe) {
@@ -151,15 +141,14 @@ const agregarAlCarrito = (prodId) => {
         carrito.push(item);
     }
     enElCarrito();
-    /*     console.log(carrito); */
+    console.log(carrito);
 }
 
-function carroVacio () {
-
+function carroVacio() {
     carrito.length === 0 ? carritoContenedor.innerHTML += `<h2 class="parrCarroVacio">Tu carrito está vacio</h2>` : console.log("El carro no está vacio");
 }
 
-
+// CONSTRUCTOR DEL CARRITO
 const enElCarrito = () => {
     contenedorCarrito.innerHTML = "";
 
@@ -172,7 +161,6 @@ const enElCarrito = () => {
         <p class="pModal">Cantidad: <input id="cantidad-${prod.id}" type="number" value="${prod.cantidad}" min="1" max="1000" step="1" style="color: #000;"/></p>
         <button onclick="sacarCarrito(${prod.id})" class="boton-eliminar"><i class="fas fa-trash-alt"></i>Eliminar</button>
         `
-
         contenedorCarrito.appendChild(div);
 
         let cantidadProductos = document.getElementById(`cantidad-${prod.id}`);
@@ -182,8 +170,8 @@ const enElCarrito = () => {
             enElCarrito();
         });
 
-        if (prod === cajaTortitas){
-
+        if (prod.nombre === "Caja de Tortitas") {
+            console.log(carrito)
             const sabores = saboresTortitas.map(sabores => sabores.toUpperCase());
             const divSabores = document.createElement("div");
             divSabores.className = ("divSabores")
@@ -218,8 +206,8 @@ const enElCarrito = () => {
                 <button onclick="seleccionar" class="btn btn-success btn-sm" type="button">Seleccionar</button>
             `;
             contenedorCarrito.appendChild(divSabores);
-        
-    
+
+
             console.log("debe seleccionar sabores de tortitas")
         }
         itemsCarrito.innerText = carrito.length;
@@ -229,7 +217,7 @@ const enElCarrito = () => {
     precioFinal.innerText = carrito.reduce((acc, prod) => acc + (prod.precio * prod.cantidad), 0);
 }
 
-
+// FUNCIONALIDAD DE LAS PARTES (BUTTONS) DEL CARRITO
 const sacarCarrito = (prodId) => {
     const item = carrito.find((prod) => prod.id === prodId);
     const i = carrito.indexOf(item);
@@ -248,15 +236,16 @@ vaciarCarrito.addEventListener("click", () => {
 })
 
 botonComprar.addEventListener("click", () => {
+    compraRealizada.push(carrito);
+    console.log(carrito);
     carrito.length = 0
     localStorage.removeItem("carroCompras");
     itemsCarrito.innerText = 0;
     Swal.fire('Gracias por tu compra!! Estamos procesando tu pedido')
-    console.log(carrito);
     enElCarrito();
 })
 
-
+//EVENTO QUE DIRECCIONA A LOS PRODUCTOS
 const botonBanner = document.querySelector(".banner-title")
 
 botonBanner.addEventListener("mousedown", () => {
@@ -265,6 +254,7 @@ botonBanner.addEventListener("mousedown", () => {
 
 
 
+//FORMULARIO
 
 formularioNombre.onchange = function () {
     console.log(formularioNombre.value);
@@ -284,8 +274,27 @@ telefonoFormulario.onchange = function () {
     usuario.push(telefonoFormulario.value);
 }
 
+const btn = document.getElementById('btnSubmit');
+
+document.getElementById('form')
+    .addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const serviceID = 'default_service';
+        const templateID = 'template_7xbn0c3';
+
+        emailjs.sendForm(serviceID, templateID, this)
+            .then(() => {
+                Swal.fire('Mensaje enviado correctamente! Gracias por contactarse');;
+            }, (err) => {
+                alert(JSON.stringify(err));
+            });
+        form.reset();
+    });
 
 
+
+// MODAL DEL CARRITO
 openModal.addEventListener('click', (e) => {
     e.preventDefault();
     modal.classList.add('modal--show');

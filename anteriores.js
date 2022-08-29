@@ -6,6 +6,39 @@
 
 saludar() */
 
+// class Pasteleria {
+//     constructor(id, imagen, nombre, precio, descripcion, cantidad) {
+//         this.id = id;
+//         this.imagen = imagen;
+//         this.nombre = nombre.toUpperCase();
+//         this.precio = parseFloat(precio);
+//         this.descripcion = descripcion;
+//         this.cantidad = cantidad
+//     }
+//     mostrarPasteleria() {
+//         alert(this.nombre + " $ " + this.precio);
+//     }
+// }
+
+// class CajaTortas extends Pasteleria {
+//     constructor(id, imagen, nombre, precio, descripcion, cantidad, sabor) {
+//         super(id, imagen, nombre, precio, descripcion, cantidad)
+//         this.sabor = sabor;
+//     }
+// }
+
+
+
+// const croissant = new Pasteleria(1, './images/croissant.jpg', "Croissant", 250, "Un verdadero Croissant de manteca, con un proceso de elaboracion de tres días", 1);
+// const panChocolat = new Pasteleria(2, "./images/pain.jpg", "Pan Chocolate", 280, "Un delicioso Pain Aux Chocolat, una especialidad verdaderamente hojaldrada", 1);
+// const chausson = new Pasteleria(3, "./images/chausson.jpg", "Chausson", 350, "Exisita Vionnoserie rellena de una compoa de manzanas y canela", 0);
+// const balcarce = new Pasteleria(4, "./images/balcarce.jpg", "Postre Balcarce", 1250, "Clásico postre elaborado con merengue, crema de leche,dulce de leche, piononos y nueces. Extra-sweet!", 1);
+// const alfajor = new Pasteleria(5, "./images/alfajor.jpg", "Alfajor", 300, "Otro clásico: el alfajor marplatense3, relleno de dulce de leche y bañado en chocolate cobretura semi-amargo", 1);
+// const cajaTortitas = new CajaTortas(6, "./images/cajatortitas.jpg", "Caja de Tortitas", 1000, "Exclusiva Caja de Tortitas, de seis unidades a eleccion! Se puede elegir entre varios sabores! ", 1, saboresTortitas);
+
+
+// productos.push(croissant, panChocolat, chausson, balcarce, alfajor, cajaTortitas);
+// saboresTortitas.push("manzana", "frutilla");
 
 
 /* croissant.mostrarPasteleria();
