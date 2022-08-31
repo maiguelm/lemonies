@@ -71,7 +71,7 @@ const exhibirPrecios = productos.map((prod) => {
 
 // RENDERIZO LAS CARDS
 function cardsProductos() {
-
+    //inyecto las cards al DOM
     productos.forEach((producto) => {
         let carta = document.createElement("div")
         carta.classname = "card h-100";
@@ -151,7 +151,7 @@ function carroVacio() {
 // CONSTRUCTOR DEL CARRITO
 const enElCarrito = () => {
     contenedorCarrito.innerHTML = "";
-
+    //inyecto los productos al modal del carrito
     carrito.forEach((prod) => {
         const div = document.createElement("div");
         div.className = ("productoEnCarrito");
@@ -203,11 +203,14 @@ const enElCarrito = () => {
                     <option value="${sabores}[5]}">${sabores[5]}</option>
                 </select>
                 <input id="cantidad-saboresTortitasTres" type="number" value="2" min="0" max="6" step="2" style="color: #000;"/>
-                <button onclick="seleccionar" class="btn btn-success btn-sm" type="button">Seleccionar</button>
+                <button id="seleccionar" class="btn btn-success btn-sm" type="button">Seleccionar</button>
             `;
             contenedorCarrito.appendChild(divSabores);
 
-
+            const botonSeleccionar = document.getElementById("seleccionar");
+            botonSeleccionar.addEventListener("click", () => {
+                console.log("Agregaste Tortita" + `${sabores}`)
+            })
             console.log("debe seleccionar sabores de tortitas")
         }
         itemsCarrito.innerText = carrito.length;
@@ -236,7 +239,7 @@ vaciarCarrito.addEventListener("click", () => {
 })
 
 botonComprar.addEventListener("click", () => {
-    compraRealizada.push(carrito);
+    compraRealizada.push(carrito.filter(producto=>producto));
     console.log(compraRealizada);
     carrito.length = 0
     localStorage.removeItem("carroCompras");
