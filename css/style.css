@@ -20,9 +20,6 @@ main {
 section {
     padding: 10vh 0 2vh 0;
 }
-.logo{ 
-    max-height: 80px;
-}
 
 #navPosition {
     background: rgb(7, 4, 4);
@@ -37,7 +34,6 @@ section {
 .navbar-center {
     width: 100%;
     max-width: 1300px;
-    max-height: 80px;
     margin: 0 auto;
     display: flex;
     align-items: center;
@@ -104,7 +100,7 @@ a:hover {
 
 .fotoFondo {
     min-height: 100vh;
-    background: url("./images/wallpaper.jpg");
+    background: url("../images/wallpaper.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     display: flex;
@@ -162,9 +158,14 @@ h2{
 }
 
 .buttonPropiedades {
+    background-color: #838383;
+    margin-top: 15px;
+    padding: 5px;
+    border: 1px solid #000;
+    border-radius: 5px;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    font-size: 1.5rem;
-    margin-bottom: 30px;
+    font-size: 1.9rem;
+    margin-bottom: 30px; 
 }
 
 .precio {
@@ -361,5 +362,149 @@ p {
 
 .divSabores{
     display: flex;
+}
 
+/* COMPRAS */
+
+.form-control {
+	margin-bottom: 0.75rem;
+	padding-bottom: 1rem;
+	font-family: "Raleway", sans-serif;
+	position: relative;
+}
+
+.form-control input {
+	border: 1px solid #3e3e3e;
+	border-radius: 5px;
+	display: block;
+	font-size: 0.85rem;
+    margin-bottom: 0.15rem;
+	padding: 10px;
+	width: 100%;
+}
+
+input[type=radio] {
+    width: 16px;
+    height: 16px;
+}
+
+.form-control input:focus {
+    outline: none;
+    box-shadow: 1.4px 0 var(--primaryColor);
+}
+
+.form-control.success input {
+	border-color: #2ecc71;
+}
+
+.form-control.success input:focus {
+	box-shadow: 1.4px 0 #2ecc71;
+}
+
+.form-control.error input {
+	border-color: #e74c3c;
+}
+
+.form-control.error input:focus {
+	box-shadow: 1.4px 0 #e74c3c;
+}
+
+.form-control i {
+	visibility: hidden;
+	position: absolute;
+	top: 42px;
+	right: 10px;
+}
+
+.form-control.success i.fa-circle-check {
+	color: #2ecc71;
+	visibility: visible;
+}
+
+.form-control.error i.fa-circle-xmark {
+	color: #e74c3c;
+	visibility: visible;
+}
+
+.form-control small {
+	color: #e74c3c;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	visibility: hidden;
+}
+
+.form-control.error small {
+	visibility: visible;
+}
+
+.form-layout {
+	font-family: 'DynaPuff', cursive;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-column-gap: 1.5rem;
+    grid-row-gap: 1.5rem;
+}
+
+.form-layout .form-control{
+    background: rgb(131, 131, 131);
+}
+.cart-summary {
+    width: 90vw;
+    margin: 1.7rem auto;
+}
+
+@media screen and (min-width: 768px) {
+    .form-layout {
+        margin: 0 5vw;
+        width: calc(100vw - 400px);
+    }
+    
+    .cart-summary {
+        width: auto;
+        position: absolute;
+        top: 117px;
+        right: 5vw;
+        max-width: 330px;
+    }
+}
+
+.resumenCompra{
+    font-size: 1.5rem;
+}
+
+div h3, div h4, div h5 {
+	font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
+}
+
+.labelFlex{
+
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+div label{
+    padding: 0px 5px;
+    margin-right: 5px;
+    font-size: 1.5rem;
+}
+
+.formularioCompra input{
+    font-family: 'DynaPuff', cursive;
+    font-size: 1.4rem;
+    color: #000
+}
+
+.formularioCompra label{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;;
+}
+
+.logoCompras{
+    margin: 0 auto;
+    margin-top: 25px;
+    height: 150px;
+    width: 150px;
 }

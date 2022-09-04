@@ -66,14 +66,14 @@ const obtenerStock = async () => {
 
 const exhibirPrecios = productos.map((prod) => {
     let exhibicion = prod.nombre + " $" + prod.precio;
-    return exhibicion
+    return exhibicion;
 })
 
 // RENDERIZO LAS CARDS
 function cardsProductos() {
     //inyecto las cards al DOM
     productos.forEach((producto) => {
-        let carta = document.createElement("div")
+        let carta = document.createElement("div");
         carta.classname = "card h-100";
         carta.innerHTML = `
         <img class="card-img-top" src=${producto.imagen} alt= 'imagen de ${producto.nombre}'>
@@ -174,45 +174,55 @@ const enElCarrito = () => {
             console.log(carrito)
             const sabores = saboresTortitas.map(sabores => sabores.toUpperCase());
             const divSabores = document.createElement("div");
-            divSabores.className = ("divSabores")
+            divSabores.className = ("divSabores");
             divSabores.innerHTML += `
-                <select name="sabores" class="form-select sabores">
+                <select name="sabores" class="form-select saboresUno">
                     <option value="${sabores}[0]}">${sabores[0]}</option>
                     <option value="${sabores}[1]}">${sabores[1]}</option>
                     <option value="${sabores}[2]}">${sabores[2]}</option>
                     <option value="${sabores}[3]}">${sabores[3]}</option>
                     <option value="${sabores}[4]}">${sabores[4]}</option>
-                    <option value="${sabores}[5]}">${sabores[5]}</option>
+                    <option value="${sabores}[5]} selected">${sabores[5]}</option>
                 </select>
-                <input id="cantidad-saboresTortitas" type="number" value="2" min="0" max="6" step="2" style="color: #000;"/>
                 <select name="sabores" class="form-select saboresDos">
                     <option value="${sabores}[0]}">${sabores[0]}</option>
-                    <option value="${sabores}[1]}">${sabores[1]}</option>
+                    <option value="${sabores}[1]}" selected>${sabores[1]}</option>
                     <option value="${sabores}[2]}">${sabores[2]}</option>
                     <option value="${sabores}[3]}">${sabores[3]}</option>
                     <option value="${sabores}[4]}">${sabores[4]}</option>
                     <option value="${sabores}[5]}">${sabores[5]}</option>
                 </select>
-                <input id="cantidad-saboresTortitasDos" type="number" value="2" min="0" max="6" step="2" style="color: #000;"/>
                 <select name="sabores" class="form-select saboresTres">
                     <option value="${sabores}[0]}">${sabores[0]}</option>
                     <option value="${sabores}[1]}">${sabores[1]}</option>
-                    <option value="${sabores}[2]}">${sabores[2]}</option>
+                    <option value="${sabores}[2]}" selected>${sabores[2]}</option>
                     <option value="${sabores}[3]}">${sabores[3]}</option>
                     <option value="${sabores}[4]}">${sabores[4]}</option>
                     <option value="${sabores}[5]}">${sabores[5]}</option>
                 </select>
-                <input id="cantidad-saboresTortitasTres" type="number" value="2" min="0" max="6" step="2" style="color: #000;"/>
                 <button id="seleccionar" class="btn btn-success btn-sm" type="button">Seleccionar</button>
             `;
             contenedorCarrito.appendChild(divSabores);
 
             const botonSeleccionar = document.getElementById("seleccionar");
+            const saboresUno = document.querySelector(".saboresUno")
             botonSeleccionar.addEventListener("click", () => {
-                console.log("Agregaste Tortita" + `${sabores}`)
-            })
-            console.log("debe seleccionar sabores de tortitas")
+                saboresUno.addEventListener("change", () =>{
+                    
+                    const indice = saboresUno.selectIndex;
+                    const sbruno = saboresUno.options[indice];
+                    tortitasElegidas.push = sbruno;
+                    console.log(tortitasElegidas)
+
+                })
+                
+
+
+            console.log(tortitasElegidas)
+                
+            });
         }
+
         itemsCarrito.innerText = carrito.length;
         localStorage.setItem("carroCompras", JSON.stringify(carrito));
     })
@@ -225,12 +235,12 @@ const sacarCarrito = (prodId) => {
     const item = carrito.find((prod) => prod.id === prodId);
     const i = carrito.indexOf(item);
     carrito.splice(i, 1);
-    itemsCarrito.innerText = carrito.length
+    itemsCarrito.innerText = carrito.length;
     enElCarrito();
 }
 
 vaciarCarrito.addEventListener("click", () => {
-    carrito.length = 0
+    carrito.length = 0;
     Swal.fire('Has vaciado tu carrito');
     localStorage.removeItem("carroCompras");
     itemsCarrito.innerText = 0;
@@ -240,16 +250,19 @@ vaciarCarrito.addEventListener("click", () => {
 
 botonComprar.addEventListener("click", () => {
     compraRealizada.push(carrito.filter(producto=>producto));
+    localStorage.setItem("compraRealizada", JSON.stringify(compraRealizada));
     console.log(compraRealizada);
-    carrito.length = 0
-    localStorage.removeItem("carroCompras");
+    carrito.length = 0;
     itemsCarrito.innerText = 0;
-    Swal.fire('Gracias por tu compra!! Estamos procesando tu pedido')
+    Swal.fire('Gracias por tu compra!! Estamos procesando tu pedido');
+    location.href = "./pages/compras.html";
     enElCarrito();
 })
 
+
+
 //EVENTO QUE DIRECCIONA A LOS PRODUCTOS
-const botonBanner = document.querySelector(".banner-title")
+const botonBanner = document.querySelector(".banner-title");
 
 botonBanner.addEventListener("mousedown", () => {
     location.href = "#productos";
@@ -279,7 +292,7 @@ telefonoFormulario.onchange = function () {
 
 const btn = document.getElementById('btnSubmit');
 
-document.getElementById('form')
+/* document.getElementById('form')
     .addEventListener('submit', function (event) {
         event.preventDefault();
 
@@ -294,7 +307,7 @@ document.getElementById('form')
             });
         form.reset();
     });
-
+ */
 
 
 // MODAL DEL CARRITO
