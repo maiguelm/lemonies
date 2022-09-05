@@ -1,5 +1,5 @@
 //variables
-const inputs = [...document.getElementsByClassName(".input")];
+const inputs = [...document.querySelectorAll(".formularioCompra .input")];
 const checkoutInfo = document.querySelector(".checkout-info");
 const checkoutTotal = document.querySelector(".checkout-total");
 const retiroLocalBtn = document.querySelector("#retiroPorLocal");
@@ -7,12 +7,17 @@ const envioBtn = document.getElementById("envioDomicilio");
 const infoExtra = document.querySelector(".info-extra");
 const form = document.querySelector(".formularioCompra");
 const email = document.querySelector("#email");
-const nombre = document.querySelector("#nombre");
+const suNombre = document.querySelector("#nombre");
 const apellido = document.querySelector("#apellido");
 const dni = document.querySelector("#dni");
 const telefono = document.querySelector("#telefono");
 const calle = document.querySelector("#calle");
 const numeracion = document.querySelector("#numeracion");
+const pagoMP = document.getElementById("payment-mp");
+const efectivo = document.getElementById("efectivo");
+const btnComprar = document.getElementsByClassName("buttonPropiedades")
+let domicilioEntrega = [];
+let metodoPago = [];
 
 //COMPRA
 let compraRealizada = localStorage.getItem("carroCompras") ? JSON.parse(localStorage.getItem("carroCompras")) : [];
@@ -35,6 +40,8 @@ const productosComprados = () => {
     })
 }
 
+//calculo el precio
+
 let sumaFinal = 0;
 let costoEnvio = 350;
 const precioFinal = () => {
@@ -52,32 +59,52 @@ const realizarCompra = () => {
 
 //metodo de entrega
 const formaEntrega = () => {
-    envioBtn.addEventListener("click", () => {
+    envioBtn.addEventListener("change", () => {
         if (envioBtn.checked) {
             infoExtra.innerHTML = `
             <h2 class="checkout-subtitle">Dirección de Envío</h2>
 				<div class="mb-3 form-control">
 					<label for="calle" class="form-label">Calle*</label>
-					<input type="text" name="street" id="calle" class="input" required>
+					<input type="text" name="calle" id="calle" class="input" required>
 					<i class="fa-regular fa-circle-check"></i>
 					<i class="fa-regular fa-circle-xmark"></i>
 					<small>Error message</small>
 			    </div>
 			    <div class="mb-3 form-control">
 				    <label for="numeracion" class="form-label">Número*</label>
-					<input type="text" name="number" maxlength="5" id="numeracion" class="input" required>
+					<input type="text" name="numeracion" maxlength="5" id="numeracion" class="input" required>
 					<i class="fa-regular fa-circle-check"></i>
 					<i class="fa-regular fa-circle-xmark"></i>
 					<small>Error message</small>
                 </div>
                 <p> Costo de envio: $350</p>
             `;
-            let nuevaSumaFinal = sumaFinal += costoEnvio;
+            const inputCalle = document.getElementById("calle");
+            const inputNumeracion = document.getElementById("numeracion");
+            inputCalle.addEventListener("blur", ()=> {
+                if (inputCalle.value === ""){
+                    funcionError(inputCalle, "Campo Obligatorio")
+                } else {
+                    funcionOk(inputCalle);
+                    domicilioEntrega.push(inputCalle.value);
+                }
+            })
+            inputNumeracion.addEventListener("blur", ()=> {
+                if (inputNumeracion.value === ""){
+                    funcionError(inputNumeracion, "Campo Obligatorio")
+                } else {
+                    funcionOk(inputNumeracion)
+                    domicilioEntrega.push(inputNumeracion.value);
+                }
+            })
+            console.log(domicilioEntrega)
+            let nuevaSumaFinal = (sumaFinal += costoEnvio);
             checkoutTotal.innerText = nuevaSumaFinal;
         }
+        localStorage.setItem("domicilioEntrega", JSON.stringify(domicilioEntrega));
     });
 
-    retiroLocalBtn.addEventListener("click", () => {
+    retiroLocalBtn.addEventListener("change", () => {
         if (retiroLocalBtn.checked) {
             infoExtra.innerHTML = "";
             let nuevaSumaFinalDos = sumaFinal -= costoEnvio;
@@ -85,170 +112,164 @@ const formaEntrega = () => {
         }
     });
 }
+formaEntrega();
 
 //validacion del formulario
-const validateForm = () => {
-    form.noValidate = true;
-    form.addEventListener("submit", e => {
-        e.preventDefault();	
-        inputs.forEach(input => {
-            checkInputs(input);
-            console.log(inputs._prototye_)
-        });
-        if (form.checkValidity()) {
-            Swal.fire({
-                title: "Te estamos redirigiendo a Mercado Pago",
-                text: "¡Gracias por elegirnos!",
-                button: false
-            }).then(setTimeout(() => {
-                mercadopago();
-            }, 3000));
-        }
-    });
-    inputs.forEach(input => {
-        input.addEventListener("blur", () => {
-            checkInputs(input);
-        });
-    });
+
+const lettersPattern = /^[A-Z À-Ú]+$/i;
+const numbersPattern = /^[0-9]+$/;
+
+const isEmail = email => /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
+
+const campos = {
+	email: false,
+	nombre: false,
+	apellido: false,
+	dni: false,
+	telefono: false
 }
 
-const checkInputs = input => {
-    //variables
-    const emailValue = email.value.trim();
-    const nombreValue = nombre.value.trim();
-    const apellidoValue = apellido.value.trim();
-    const dniValue = dni.value.trim();
-    const telefonoValue = telefono.value.trim();
-    const calleValue = calle.value.trim();
-    const numeroValue = numero.value.trim();
+const validarFormulario = (e) => {
+    const dniValue = dni.value;
+    const phoneValue = telefono.value;
 
-    //regex
-    const lettersPattern = /^[A-ZÀ-Ú]+$/i;
-    const numbersPattern = /^[0-9]+$/;
-
-    //logic
-    switch (input) {
-        case email:
-            if (emailValue === "") {
-                setErrorFor(email, "Este campo es obligatorio.");
-            } else if (!isEmail(emailValue)) {
-                setErrorFor(email, "Introduzca un email válido.");
+    switch(e.target.name){
+        case "email": 
+        if (email.value === ""){
+            funcionError(email,"Campo obligatorio")
+        } else if (!isEmail(email.value)){
+            funcionError(email, "Ingrese un mail válido")
+        } else {
+            funcionOk(email)
+            campos["email"] = true;
+        }
+        break;
+        case "nombre":
+            if (nombre.value === ""){
+                funcionError(nombre,"Campo obligatorio")
+            } else if (!lettersPattern.test(nombre.value)){
+                funcionError(nombre, "Ingrese un nombre válido")
             } else {
-                setSuccessFor(email);
+                funcionOk(nombre)
+                campos["nombre"] = true;
             }
             break;
-
-        case nombre:
-            if (nombreValue === "") {
-                setErrorFor(nombre, "Este campo es obligatorio.");
-            } else if (!lettersPattern.test(nombreValue)) {
-                setErrorFor(nombre, "Introduzca un nombre válido.");
+        case "apellido":
+            if (apellido.value === ""){
+                funcionError(apellido,"Campo obligatorio")
+            } else if (!lettersPattern.test(apellido.value)){
+                funcionError(apellido, "Ingrese un apellido válido")
             } else {
-                setSuccessFor(nombre);
+                funcionOk(apellido)
+                campos["apellido"] = true;
             }
             break;
-
-        case apellido:
-            if (apellidoValue === "") {
-                setErrorFor(apellido, "Este campo es obligatorio.");
-            } else if (!lettersPattern.test(apellidoValue)) {
-                setErrorFor(apellido, "Introduzca un apellido válido.");
+        case "dni":
+            if (dniValue === ""){
+                funcionError(dni,"Campo obligatorio")
+            } else if ((!numbersPattern.test(dniValue)) || (dniValue.length < 6)){
+                funcionError(dni, "Ingrese un DNI válido")
             } else {
-                setSuccessFor(apellido);
+                funcionOk(dni)
+                campos["dni"] = true;
             }
             break;
-
-        case dni:
-            if (dniValue === "") {
-                setErrorFor(dni, "Este campo es obligatorio.");
-            } else if ((!numbersPattern.test(dniValue)) || (dniValue.length < 6)) {
-                setErrorFor(dni, "Introduzca un documento válido.");
+        case "telefono":
+            if (phoneValue === ""){
+                funcionError(telefono,"Campo obligatorio")
+            } else if ((!numbersPattern.test(phoneValue)) || (phoneValue.length < 8)) {
+                funcionError(telefono, "Ingrese un telefono válido")
             } else {
-                setSuccessFor(dni);
+                funcionOk(telefono)
+                campos["telefono"] = true;
             }
-            break;
-            
-        case telefono:        
-            if (telefonoValue === "") {
-                setErrorForTelefono(telefono, "Este campo es obligatorio.");
-            } else if ((!numbersPattern.test(telefonoValue)) || (telefonoValue.length < 8)) {
-                setErrorForTelefono(telefono, "Introduzca un celular válido.");
-            } else {
-                const formControl = telefono.parentElement.parentElement;
-                formControl.className = "form-control success";
-            }
-            break;
-
-        case calle:
-            if (calleValue === "") {
-                setErrorFor(calle, "Este campo es obligatorio.");
-            } else if (!lettersPattern.test(calleValue)) {
-                setErrorFor(calle, "Introduzca una calle válida.");
-            } else {
-                setSuccessFor(calle);
-            }
-            break;
-
-        case numeracion: 
-            if (numeracionValue === "") {
-                setErrorFor(numeracion, "Este campo es obligatorio.");
-            } else if (!numeracionsPattern.test(numeracionValue)) {
-                setErrorFor(numeracion, "Introduzca un número válido.");
-            } else {
-                setSuccessFor(numeracion);
-            }
-            break;
-
-        default: 
-            console.log("Switch error");
             break;
     }
 }
-
-//validate email
-const isEmail = email => /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
-
-//success-error messages
-const setErrorFor = (input, message) => {
+const funcionError = (input, mensaje) => {
     const formControl = input.parentElement;
     const small = formControl.querySelector("small");
     formControl.className = "form-control error";
-    small.innerText = message;
+    document.querySelector("i").classList.remove("fa-circle-xmark")
+    small.innerText = mensaje;
 }
 
-const setSuccessFor = input => {
+const funcionOk = input => {
     const formControl = input.parentElement;
     formControl.className = "form-control success";
+    document.querySelector("i").classList.remove("fa-circle-circle")
 }
 
-const setErrorForTelefono = (input, message) => {
-    const formControl = input.parentElement.parentElement;
-    const small = formControl.querySelector("small");
-    formControl.className = "form-control error";
-    small.innerText = message;
-}
+inputs.forEach((input) => {
+	input.addEventListener('keyup', validarFormulario);
+	input.addEventListener('blur', validarFormulario);
+});
 
-//payment
+//validacion efectivo
+let check = efectivo.addEventListener("change", () => {
+    if (efectivo.checked) {
+        console.log('Esta chequeado')
+    }
+})
+
+
+//validacion retiro en local
+// let tildado = false;
+
+// let check2 = () => {
+//     if (retiroLocalBtn.checked) {
+//         tildado = true;
+//         console.log("retiro por el local")
+//     }
+//     return tildado
+// }
+// check2()
+
+
+form.addEventListener('submit', (e) => {
+	e.preventDefault();
+    if (campos.email && campos.nombre && campos.apellido && campos.dni &&campos.telefono && efectivo.checked) {
+        swal.fire ("Gracias por tu compra!! Pronto nos comunicaremos para coordinar la entrega")
+        form.reset();
+    }else if (campos.email && campos.nombre && campos.apellido && campos.dni && campos.telefono && pagoMP.checked) {
+        swal.fire({
+            title: "Te llevamos a Mercado Pago, gracias por tu compra!!",
+            text: "Pronto nos comunicaremos para coordinar la entrega",
+            button: false
+        }).then(setTimeout(() => {
+            mercadopago();
+        }, 3000));
+        mercadopago()
+        form.reset();
+    }else {
+        swal.fire ("Por favor, verifica todos los campos")
+    }
+
+});  
+
+
+//pago
+
 const mercadopago = async () => {
     const carritoMap = compraRealizada.map(item => {
         let newItem =     
         {
-            title: item.title,
+            title: item.titulo,
             description: "",
-            picture_url: item.image,
+            picture_url: item.imagen,
             category_id: item.id,
-            quantity: item.amount,
+            quantity: item.cantidad,
             currency_id: "ARS",
-            unit_price: item.price
+            unit_price: item.precio
         }
         return newItem;
     });
-
+    console.log(carritoMap)
     try {
         let response = await fetch("https://api.mercadopago.com/checkout/preferences", {
             method: "POST",
             headers: {
-                Authorization: "Bearer TEST-6296233006857925-060821-f03fa770269b05fac825bb2edd76f32f-46022354"
+                Authorization: "Bearer TEST-3745156904847921-090516-f1691d3a4f02429c92e0b7facddc9b4a-156371418"
             },
             body: JSON.stringify({
                 items: carritoMap,
@@ -267,7 +288,17 @@ const mercadopago = async () => {
     }
 }
 
+// function pagar() {
+//     pagoMP.addEventListener("change", () => {
+//         if (pagoMP.checked) {
+//             Swal.fire('Lo siento!! Estamos trabajando para incorporar el método de pago')
+//         }
+//     });
+
+// }
+// pagar()
+
+
+
 //execution
 realizarCompra();
-formaEntrega();
-validateForm();

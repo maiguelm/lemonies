@@ -4,7 +4,7 @@ let productos = [];
 const saboresTortitas = ["lemon pie", "coco", "valeria", "ricota", "manzana", "frutilla"];
 let tortitasElegidas = [];
 let carrito = [];
-let usuario = [];
+// let usuario = [];
 let compraRealizada = [];
 
 
@@ -19,10 +19,6 @@ const precioFinal = document.getElementById("precioTotal");
 const cantidad = document.getElementById("cantidad");
 const botonComprar = document.getElementById("comprar-carrito");
 const iconoCarrito = document.getElementsByClassName("nav-icon");
-
-const formularioNombre = document.querySelector(".nombreForm");
-const telefonoFormulario = document.querySelector(".telForm");
-const mensajes = document.getElementById("mensajes");
 
 const openModal = document.querySelector('.abrirCarrito');
 const modal = document.querySelector('.miModal');
@@ -45,13 +41,13 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 // TRAIGO EL LOCAL STORAGE DEL USUARIO
-document.addEventListener('DOMContentLoaded', () => {
-    if (localStorage.getItem("usuario")) {
-        usuario = JSON.parse(localStorage.getItem("usuario"));
-        console.log(usuario);
-        cardsProductos();
-    }
-})
+// document.addEventListener('DOMContentLoaded', () => {
+//     if (localStorage.getItem("usuario")) {
+//         usuario = JSON.parse(localStorage.getItem("usuario"));
+//         console.log(usuario);
+//         cardsProductos();
+//     }
+// })
 
 //CREO MI STOCK o TRAIGO MI SOTCK
 
@@ -206,16 +202,10 @@ const enElCarrito = () => {
 
             const botonSeleccionar = document.getElementById("seleccionar");
             const saboresUno = document.querySelector(".saboresUno")
+            const saboresDos = document.querySelector(".saboresDos")
+            const saboresTres = document.querySelector(".saboresTres")
             botonSeleccionar.addEventListener("click", () => {
-                saboresUno.addEventListener("change", () =>{
-                    
-                    const indice = saboresUno.selectIndex;
-                    const sbruno = saboresUno.options[indice];
-                    tortitasElegidas.push = sbruno;
-                    console.log(tortitasElegidas)
-
-                })
-                
+                tortitasElegidas.push = saboresUno.value, saboresDos.value, saboresTres
 
 
             console.log(tortitasElegidas)
@@ -270,27 +260,14 @@ botonBanner.addEventListener("mousedown", () => {
 
 
 
-//FORMULARIO
-
-formularioNombre.onchange = function () {
-    console.log(formularioNombre.value);
-    usuario.push(formularioNombre.value);
-    localStorage.setItem("usuario", JSON.stringify(usuario));
-}
-
-formularioNombre.addEventListener("select", (e) => {
-    let comienzo = e.target.selectionStart;
-    let fin = e.target.sectionEnd;
-    let nombreFinal = formularioNombre.value;
-    mensajes.innerHTML = nombreFinal.substring(comienzo, fin);
-})
-
-telefonoFormulario.onchange = function () {
-    console.log(telefonoFormulario.value);
-    usuario.push(telefonoFormulario.value);
-}
-
+//FORMULARIO DE CONTACTO
+const formularioNombre = document.querySelector(".nombreForm");
+const telefonoFormulario = document.querySelector(".telForm");
+const mensajes = document.getElementById("mensajes");
+const correoElectronico = document.getElementById("email");
+const formulario = document.querySelector(".formulario");
 const btn = document.getElementById('btnSubmit');
+
 
 /* document.getElementById('form')
     .addEventListener('submit', function (event) {
