@@ -1,10 +1,10 @@
-//DECLARO ARRAYS
+//DECLARO ARRAYS y VARIABLES
 
 let productos = [];
 const saboresTortitas = ["lemon pie", "coco", "valeria", "ricota", "manzana", "frutilla"];
 let tortitasElegidas = [];
 let carrito = [];
-// let usuario = [];
+const inputs = [...document.querySelectorAll(".formulario .input")];
 let compraRealizada = [];
 
 
@@ -39,15 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     obtenerStock();
 })
-
-// TRAIGO EL LOCAL STORAGE DEL USUARIO
-// document.addEventListener('DOMContentLoaded', () => {
-//     if (localStorage.getItem("usuario")) {
-//         usuario = JSON.parse(localStorage.getItem("usuario"));
-//         console.log(usuario);
-//         cardsProductos();
-//     }
-// })
 
 //CREO MI STOCK o TRAIGO MI SOTCK
 
@@ -84,12 +75,12 @@ function cardsProductos() {
 
         cargaCartas.appendChild(carta);
         cartas.appendChild(cargaCartas);
-
-
+        //agregando productos al carrito
         const botonAgregar = document.getElementById(`agregar${producto.id}`);
 
         botonAgregar.addEventListener("click", () => {
             if (producto.cantidad === 0) {
+                //simulo que no hay stock de un producto
                 Swal.fire({
                     title: 'Disulpas!!',
                     text: 'No contamos con stock',
@@ -110,16 +101,13 @@ function cardsProductos() {
                         toast.addEventListener('mouseleave', Swal.resumeTimer)
                     }
                 })
-
                 Toast.fire({
                     icon: 'success',
                     title: `${producto.nombre} agregado al carrito`
                 })
                 agregarAlCarrito(producto.id)
             }
-
         })
-
     })
 }
 
@@ -158,66 +146,86 @@ const enElCarrito = () => {
         <button onclick="sacarCarrito(${prod.id})" class="boton-eliminar"><i class="fas fa-trash-alt"></i>Eliminar</button>
         `
         contenedorCarrito.appendChild(div);
-
+        //actualizo el precio si se aumenta la cantidad de productos
         let cantidadProductos = document.getElementById(`cantidad-${prod.id}`);
         cantidadProductos.addEventListener("change", (e) => {
             let nuevaCantidad = e.target.value;
             prod.cantidad = nuevaCantidad;
             enElCarrito();
         });
-
+        //si hay una caja de tortitas, el usuario debería elegir los sabores mediante esta funcion, que guarda la seleccion en un array y la guarda en el local storage
         if (prod.nombre === "Caja de Tortitas") {
-            console.log(carrito)
-            const sabores = saboresTortitas.map(sabores => sabores.toUpperCase());
-            const divSabores = document.createElement("div");
-            divSabores.className = ("divSabores");
-            divSabores.innerHTML += `
-                <select name="sabores" class="form-select saboresUno">
-                    <option value="${sabores}[0]}">${sabores[0]}</option>
-                    <option value="${sabores}[1]}">${sabores[1]}</option>
-                    <option value="${sabores}[2]}">${sabores[2]}</option>
-                    <option value="${sabores}[3]}">${sabores[3]}</option>
-                    <option value="${sabores}[4]}">${sabores[4]}</option>
-                    <option value="${sabores}[5]} selected">${sabores[5]}</option>
-                </select>
-                <select name="sabores" class="form-select saboresDos">
-                    <option value="${sabores}[0]}">${sabores[0]}</option>
-                    <option value="${sabores}[1]}" selected>${sabores[1]}</option>
-                    <option value="${sabores}[2]}">${sabores[2]}</option>
-                    <option value="${sabores}[3]}">${sabores[3]}</option>
-                    <option value="${sabores}[4]}">${sabores[4]}</option>
-                    <option value="${sabores}[5]}">${sabores[5]}</option>
-                </select>
-                <select name="sabores" class="form-select saboresTres">
-                    <option value="${sabores}[0]}">${sabores[0]}</option>
-                    <option value="${sabores}[1]}">${sabores[1]}</option>
-                    <option value="${sabores}[2]}" selected>${sabores[2]}</option>
-                    <option value="${sabores}[3]}">${sabores[3]}</option>
-                    <option value="${sabores}[4]}">${sabores[4]}</option>
-                    <option value="${sabores}[5]}">${sabores[5]}</option>
-                </select>
-                <button id="seleccionar" class="btn btn-success btn-sm" type="button">Seleccionar</button>
-            `;
-            contenedorCarrito.appendChild(divSabores);
-
-            const botonSeleccionar = document.getElementById("seleccionar");
-            const saboresUno = document.querySelector(".saboresUno")
-            const saboresDos = document.querySelector(".saboresDos")
-            const saboresTres = document.querySelector(".saboresTres")
-            botonSeleccionar.addEventListener("click", () => {
-                tortitasElegidas.push = saboresUno.value, saboresDos.value, saboresTres
-
-
-            console.log(tortitasElegidas)
-                
-            });
+            imprimirSelect();
         }
-
+        //modificacion del numero que aparece en el icono del carrito
         itemsCarrito.innerText = carrito.length;
+        //guardo el contenido del carrito en el local storage
         localStorage.setItem("carroCompras", JSON.stringify(carrito));
     })
 
     precioFinal.innerText = carrito.reduce((acc, prod) => acc + (prod.precio * prod.cantidad), 0);
+}
+
+//FUNCION PARA IMPRIMIR Y TOMAR LOS SABORES DE LAS TORTITAS
+function imprimirSelect() {
+
+    const sabores = saboresTortitas.map((sabores) => sabores.toUpperCase());
+    console.log(sabores);
+    //INYECTO LOS SELECTS PARA ELEGIR LOS SABORES
+    const divSabores = document.createElement("div");
+    divSabores.className = "divSabores";
+    divSabores.innerHTML += `
+              <select id="saboresUno" class="form-select" onchange="saboresElegidos()">
+                  <option selected value="" disabled>Elija su sabor</option>
+                  <option value="${sabores[0]}">${sabores[0]}</option>
+                  <option value="${sabores[1]}">${sabores[1]}</option>
+                  <option value="${sabores[2]}">${sabores[2]}</option>
+                  <option value="${sabores[3]}">${sabores[3]}</option>
+                  <option value="${sabores[4]}">${sabores[4]}</option>
+                  <option value="${sabores[5]}">${sabores[5]}</option>
+              </select>
+              <select id="saboresDos" class="form-select" onchange="saboresElegidos()">
+              <option selected value="" disabled>Elija su sabor</option>
+                <option value="${sabores[0]}">${sabores[0]}</option>
+                <option value="${sabores[1]}">${sabores[1]}</option>
+                <option value="${sabores[2]}">${sabores[2]}</option>
+                <option value="${sabores[3]}">${sabores[3]}</option>
+                <option value="${sabores[4]}">${sabores[4]}</option>
+                <option value="${sabores[5]}">${sabores[5]}</option>
+              </select>  
+              <select id="saboresTres" class="form-select" onchange="saboresElegidos()">
+              <option selected value="" disabled>Elija su sabor</option>
+                <option value="${sabores[0]}">${sabores[0]}</option>
+                <option value="${sabores[1]}">${sabores[1]}</option>
+                <option value="${sabores[2]}">${sabores[2]}</option>
+                <option value="${sabores[3]}">${sabores[3]}</option>
+                <option value="${sabores[4]}">${sabores[4]}</option>
+                <option value="${sabores[5]}">${sabores[5]}</option>
+              </select> 
+          <button id="seleccionarBtn" class="btn btn-success btn-sm" type="button" onchange="saboresElegidos()">Seleccionar</button>
+      `;
+    contenedorCarrito.appendChild(divSabores);
+}
+
+//CON ESTA FUNCION, ESCUCHO LA SELECCION DE SABORES DE TORTITAS REALIZADA POR EL USUARIO
+function saboresElegidos() {
+    //Capturamos los valores de los select
+    let saborPrimero = document.getElementById("saboresUno").value;
+    let saborSegundo = document.getElementById("saboresDos").value;
+    let saborTercero = document.getElementById("saboresTres").value;
+    let btnTortitas = document.getElementById("seleccionarBtn");
+
+    //Imprimimos en consola
+    console.log(
+        "Tus sabores seleccionados son: " + saborPrimero + ", " + saborSegundo + ", " + saborTercero
+    );
+    btnTortitas.addEventListener("click", () => {
+        tortitasElegidas.push(saborPrimero, saborSegundo, saborTercero);
+        const seleccionTortitas = tortitasElegidas.slice(6, 10);
+        console.log(seleccionTortitas);
+        localStorage.setItem("saboresTortitas", JSON.stringify(seleccionTortitas));
+    })
+
 }
 
 // FUNCIONALIDAD DE LAS PARTES (BUTTONS) DEL CARRITO
@@ -239,13 +247,15 @@ vaciarCarrito.addEventListener("click", () => {
 })
 
 botonComprar.addEventListener("click", () => {
-    compraRealizada.push(carrito.filter(producto=>producto));
+    compraRealizada.push(carrito.filter(producto => producto));
     localStorage.setItem("compraRealizada", JSON.stringify(compraRealizada));
     console.log(compraRealizada);
     carrito.length = 0;
     itemsCarrito.innerText = 0;
-    Swal.fire('Gracias por tu compra!! Estamos procesando tu pedido');
-    location.href = "./pages/compras.html";
+    Swal.fire('Gracias por tu compra!! Estamos redirigiéndote a la página de pago');
+    setTimeout(() => {
+        location.href = "./pages/compras.html";
+    }, 2000);
     enElCarrito();
 })
 
@@ -263,28 +273,117 @@ botonBanner.addEventListener("mousedown", () => {
 //FORMULARIO DE CONTACTO
 const formularioNombre = document.querySelector(".nombreForm");
 const telefonoFormulario = document.querySelector(".telForm");
-const mensajes = document.getElementById("mensajes");
 const correoElectronico = document.getElementById("email");
 const formulario = document.querySelector(".formulario");
 const btn = document.getElementById('btnSubmit');
+const lettersPattern = /^[A-Z À-Ú]+$/i;
+const numbersPattern = /^[0-9]+$/;
+const isEmail = email => /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
 
+//VALIDACION MANUAL DEL FORMULARIO
+const campos = {
+    nombre: false,
+    email: false,
+    telefono: false
+}
 
-/* document.getElementById('form')
-    .addEventListener('submit', function (event) {
-        event.preventDefault();
+const validarFormulario = (e) => {
+    switch (e.target.name) {
+        case "nombre":
+            if ((formularioNombre.value === "") || (!lettersPattern.test(formularioNombre.value))) {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-right',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: false,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+                Toast.fire({
+                    icon: 'success',
+                    title: `Revisa los datos ingresados`
+                })
+            } else {
+                campos["nombre"] = true
+            }
+            break;
+        case "email":
+            if ((correoElectronico.value === "") || (!isEmail(correoElectronico.value))) {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-right',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: false,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+                Toast.fire({
+                    icon: 'success',
+                    title: `Revisa los datos ingresados`
+                })
+            } else {
+                campos["email"] = true
+            }
+            break;
+        case "phone":
+            if ((telefonoFormulario.value === "") || (!numbersPattern.test(telefonoFormulario.value))) {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-right',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: false,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+                Toast.fire({
+                    icon: 'success',
+                    title: `Revisa los datos ingresados`
+                })
+            } else {
+                campos["telefono"] = true
+            }
+            break;
+        default:
+            console.log("Formulario ok")
+            break;
+    }
 
-        const serviceID = 'default_service';
-        const templateID = 'template_7xbn0c3';
+}
 
-        emailjs.sendForm(serviceID, templateID, this)
-            .then(() => {
-                Swal.fire('Mensaje enviado correctamente! Gracias por contactarse');;
-            }, (err) => {
-                alert(JSON.stringify(err));
-            });
-        form.reset();
+//api que envia el mail
+document.getElementById('form')
+    .addEventListener('submit', function (e) {
+        e.preventDefault();
+        console.log(campos);
+        if (campos.email && campos.nombre && campos.telefono) {
+            const serviceID = 'default_service';
+            const templateID = 'template_7xbn0c3';
+
+            emailjs.sendForm(serviceID, templateID, this)
+                .then(() => {
+                    Swal.fire('Mensaje enviado correctamente! Gracias por contactarse');;
+                }, (err) => {
+                    alert(JSON.stringify(err));
+                    form.reset();
+                })
+            form.reset();
+        } else {
+            swal.fire("Por favor, verifica todos los campos")
+        }
     });
- */
+
+inputs.forEach((input) => {
+    input.addEventListener('blur', validarFormulario);
+});
 
 
 // MODAL DEL CARRITO

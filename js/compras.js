@@ -21,10 +21,14 @@ let metodoPago = [];
 
 //COMPRA
 let compraRealizada = localStorage.getItem("carroCompras") ? JSON.parse(localStorage.getItem("carroCompras")) : [];
+let tortitasElegidas = localStorage.getItem("saboresTortitas") ? JSON.parse(localStorage.getItem("saboresTortitas")) : [];
 
 
 
-console.log(compraRealizada)
+console.log(compraRealizada);
+console.log(tortitasElegidas);
+
+
 const productosComprados = () => {
     compraRealizada.forEach((producto) => {
         let div = document.createElement("div");
@@ -37,7 +41,7 @@ const productosComprados = () => {
         </div>
         `;
         checkoutInfo.appendChild(div);
-    })
+    });
 }
 
 //calculo el precio
@@ -81,18 +85,24 @@ const formaEntrega = () => {
             `;
             const inputCalle = document.getElementById("calle");
             const inputNumeracion = document.getElementById("numeracion");
-            inputCalle.addEventListener("blur", ()=> {
-                if (inputCalle.value === ""){
+            inputCalle.addEventListener("blur", () => {
+                if (inputCalle.value === "") {
                     funcionError(inputCalle, "Campo Obligatorio")
-                } else {
+                } else if (!lettersPattern.test(inputCalle.value)) {
+                    funcionError(inputCalle, "Datos inválidos")
+                }
+                else {
                     funcionOk(inputCalle);
                     domicilioEntrega.push(inputCalle.value);
                 }
             })
-            inputNumeracion.addEventListener("blur", ()=> {
-                if (inputNumeracion.value === ""){
+            inputNumeracion.addEventListener("blur", () => {
+                if (inputNumeracion.value === "") {
                     funcionError(inputNumeracion, "Campo Obligatorio")
-                } else {
+                } else if (!numbersPattern.test(inputCalle.value)) {
+                    funcionError(inputNumeracion, "Datos inválidos")
+                }
+                else {
                     funcionOk(inputNumeracion)
                     domicilioEntrega.push(inputNumeracion.value);
                 }
@@ -122,32 +132,32 @@ const numbersPattern = /^[0-9]+$/;
 const isEmail = email => /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
 
 const campos = {
-	email: false,
-	nombre: false,
-	apellido: false,
-	dni: false,
-	telefono: false
+    email: false,
+    nombre: false,
+    apellido: false,
+    dni: false,
+    telefono: false
 }
 
 const validarFormulario = (e) => {
     const dniValue = dni.value;
     const phoneValue = telefono.value;
 
-    switch(e.target.name){
-        case "email": 
-        if (email.value === ""){
-            funcionError(email,"Campo obligatorio")
-        } else if (!isEmail(email.value)){
-            funcionError(email, "Ingrese un mail válido")
-        } else {
-            funcionOk(email)
-            campos["email"] = true;
-        }
-        break;
+    switch (e.target.name) {
+        case "email":
+            if (email.value === "") {
+                funcionError(email, "Campo obligatorio")
+            } else if (!isEmail(email.value)) {
+                funcionError(email, "Ingrese un mail válido")
+            } else {
+                funcionOk(email)
+                campos["email"] = true;
+            }
+            break;
         case "nombre":
-            if (nombre.value === ""){
-                funcionError(nombre,"Campo obligatorio")
-            } else if (!lettersPattern.test(nombre.value)){
+            if (nombre.value === "") {
+                funcionError(nombre, "Campo obligatorio")
+            } else if (!lettersPattern.test(nombre.value)) {
                 funcionError(nombre, "Ingrese un nombre válido")
             } else {
                 funcionOk(nombre)
@@ -155,9 +165,9 @@ const validarFormulario = (e) => {
             }
             break;
         case "apellido":
-            if (apellido.value === ""){
-                funcionError(apellido,"Campo obligatorio")
-            } else if (!lettersPattern.test(apellido.value)){
+            if (apellido.value === "") {
+                funcionError(apellido, "Campo obligatorio")
+            } else if (!lettersPattern.test(apellido.value)) {
                 funcionError(apellido, "Ingrese un apellido válido")
             } else {
                 funcionOk(apellido)
@@ -165,9 +175,9 @@ const validarFormulario = (e) => {
             }
             break;
         case "dni":
-            if (dniValue === ""){
-                funcionError(dni,"Campo obligatorio")
-            } else if ((!numbersPattern.test(dniValue)) || (dniValue.length < 6)){
+            if (dniValue === "") {
+                funcionError(dni, "Campo obligatorio")
+            } else if ((!numbersPattern.test(dniValue)) || (dniValue.length < 6)) {
                 funcionError(dni, "Ingrese un DNI válido")
             } else {
                 funcionOk(dni)
@@ -175,8 +185,8 @@ const validarFormulario = (e) => {
             }
             break;
         case "telefono":
-            if (phoneValue === ""){
-                funcionError(telefono,"Campo obligatorio")
+            if (phoneValue === "") {
+                funcionError(telefono, "Campo obligatorio")
             } else if ((!numbersPattern.test(phoneValue)) || (phoneValue.length < 8)) {
                 funcionError(telefono, "Ingrese un telefono válido")
             } else {
@@ -184,6 +194,9 @@ const validarFormulario = (e) => {
                 campos["telefono"] = true;
             }
             break;
+        default:
+            alert("algo esta mal");
+            break
     }
 }
 const funcionError = (input, mensaje) => {
@@ -201,37 +214,27 @@ const funcionOk = input => {
 }
 
 inputs.forEach((input) => {
-	input.addEventListener('keyup', validarFormulario);
-	input.addEventListener('blur', validarFormulario);
+    input.addEventListener('keyup', validarFormulario);
+    input.addEventListener('blur', validarFormulario);
 });
 
-//validacion efectivo
+//validacion boton efectivo
 let check = efectivo.addEventListener("change", () => {
     if (efectivo.checked) {
-        console.log('Esta chequeado')
+        console.log('Esta chequeado');
+        metodoPago.push("Paga en Efectivo")
     }
 })
 
 
-//validacion retiro en local
-// let tildado = false;
-
-// let check2 = () => {
-//     if (retiroLocalBtn.checked) {
-//         tildado = true;
-//         console.log("retiro por el local")
-//     }
-//     return tildado
-// }
-// check2()
-
-
+//EJECUCION DE LA COMPRA
 form.addEventListener('submit', (e) => {
-	e.preventDefault();
-    if (campos.email && campos.nombre && campos.apellido && campos.dni &&campos.telefono && efectivo.checked) {
-        swal.fire ("Gracias por tu compra!! Pronto nos comunicaremos para coordinar la entrega")
+    e.preventDefault();
+    if (campos.email && campos.nombre && campos.apellido && campos.dni && campos.telefono && efectivo.checked) {
+        swal.fire("Gracias por tu compra!! Pronto nos comunicaremos para coordinar la entrega")
         form.reset();
-    }else if (campos.email && campos.nombre && campos.apellido && campos.dni && campos.telefono && pagoMP.checked) {
+
+    } else if (campos.email && campos.nombre && campos.apellido && campos.dni && campos.telefono && pagoMP.checked) {
         swal.fire({
             title: "Te llevamos a Mercado Pago, gracias por tu compra!!",
             text: "Pronto nos comunicaremos para coordinar la entrega",
@@ -241,18 +244,17 @@ form.addEventListener('submit', (e) => {
         }, 3000));
         mercadopago()
         form.reset();
-    }else {
-        swal.fire ("Por favor, verifica todos los campos")
+    } else {
+        swal.fire("Por favor, verifica todos los campos")
     }
 
-});  
-
+});
 
 //pago
 
 const mercadopago = async () => {
     const carritoMap = compraRealizada.map(item => {
-        let newItem =     
+        let newItem =
         {
             title: item.titulo,
             description: "",
@@ -286,19 +288,8 @@ const mercadopago = async () => {
     } catch (error) {
         console.log(error);
     }
+    metodoPago.push("Paga por MP");
 }
-
-// function pagar() {
-//     pagoMP.addEventListener("change", () => {
-//         if (pagoMP.checked) {
-//             Swal.fire('Lo siento!! Estamos trabajando para incorporar el método de pago')
-//         }
-//     });
-
-// }
-// pagar()
-
-
 
 //execution
 realizarCompra();
